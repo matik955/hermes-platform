@@ -32,8 +32,8 @@ class Account
     #[ORM\Column(type: 'integer')]
     private int $mtVersion;
 
-    #[ORM\Column(type: 'float')]
-    private float $balance;
+    #[ORM\Column(type: 'float', nullable: true)]
+    private ?float $balance;
 
     #[ORM\Column(type: 'boolean')]
     private bool $archived;
@@ -62,10 +62,92 @@ class Account
     #[ORM\OneToMany(mappedBy: 'account', targetEntity: Order::class)]
     private Collection $orders;
 
-    public function __construct()
+    public function __construct(
+        string      $login,
+        string      $password,
+        string      $tradeServer,
+        int         $mtVersion,
+        float       $balance,
+        User        $user,
+        ?Collection $sourceDefinitions = null,
+        ?Collection $targetDefinitions = null,
+        ?Collection $orders = null
+    )
     {
-        $this->sourceDefinitions = new ArrayCollection();
-        $this->targetDefinitions = new ArrayCollection();
-        $this->orders = new ArrayCollection();
+        $this->login = $login;
+        $this->password = $password;
+        $this->tradeServer = $tradeServer;
+        $this->mtVersion = $mtVersion;
+        $this->balance = $balance;
+        $this->user = $user;
+
+        $this->sourceDefinitions = $sourceDefinitions ?? new ArrayCollection();
+        $this->targetDefinitions = $targetDefinitions ?? new ArrayCollection();
+        $this->orders = $orders ?? new ArrayCollection();
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getLogin(): string
+    {
+        return $this->login;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function getTradeServer(): string
+    {
+        return $this->tradeServer;
+    }
+
+    public function getMtVersion(): int
+    {
+        return $this->mtVersion;
+    }
+
+    public function getBalance(): ?float
+    {
+        return $this->balance;
+    }
+
+    public function isArchived(): bool
+    {
+        return $this->archived;
+    }
+
+    public function getCreatedAt(): DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function getArchivedAt(): ?DateTime
+    {
+        return $this->archivedAt;
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    public function getSourceDefinitions(): Collection
+    {
+        return $this->sourceDefinitions;
+    }
+
+    public function getTargetDefinitions(): Collection
+    {
+        return $this->targetDefinitions;
+    }
+
+    public function getOrders(): Collection
+    {
+        return $this->orders;
     }
 }

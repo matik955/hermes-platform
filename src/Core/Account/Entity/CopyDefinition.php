@@ -23,7 +23,7 @@ class CopyDefinition
     private bool $active;
 
     #[ORM\Column(type: 'boolean')]
-    private bool $archived;
+    private bool $archived = false;
 
     #[Gedmo\Timestampable(on: 'create')]
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
@@ -50,5 +50,45 @@ class CopyDefinition
     public function __construct()
     {
         $this->orders = new ArrayCollection();
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    public function isArchived(): bool
+    {
+        return $this->archived;
+    }
+
+    public function getCreatedAt(): DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function getArchivedAt(): ?DateTime
+    {
+        return $this->archivedAt;
+    }
+
+    public function getSourceAccount(): Account
+    {
+        return $this->sourceAccount;
+    }
+
+    public function getTargetAccount(): Account
+    {
+        return $this->targetAccount;
+    }
+
+    public function getOrders(): Collection
+    {
+        return $this->orders;
     }
 }
