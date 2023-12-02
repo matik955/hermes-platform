@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\Table(name: "user")]
+#[ORM\Table(name: "hermes_user")]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -31,8 +31,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Account::class)]
     private Collection $accounts;
 
-    public function __construct()
+    public function __construct(
+        string $email,
+        string $password
+    )
     {
+        $this->email = $email;
+        $this->password = $password;
         $this->accounts = new ArrayCollection();
     }
 

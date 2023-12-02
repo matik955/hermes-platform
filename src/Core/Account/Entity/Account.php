@@ -2,6 +2,7 @@
 
 namespace App\Core\Account\Entity;
 
+use App\Core\Account\Repository\AccountRepository;
 use App\Core\Order\Entity\Order;
 use App\Core\User\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use DateTime;
 
-#[ORM\Entity()]
+#[ORM\Entity(repositoryClass: AccountRepository::class)]
 #[ORM\Table(name: "account")]
 class Account
 {

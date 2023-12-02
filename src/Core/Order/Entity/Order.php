@@ -10,7 +10,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use DateTime;
 
 #[ORM\Entity()]
-#[ORM\Table(name: "order")]
+#[ORM\Table(name: "hermes_order")]
 class Order
 {
     #[ORM\Id]

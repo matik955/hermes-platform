@@ -2,6 +2,7 @@
 
 namespace App\Core\Account\Entity;
 
+use App\Core\Account\Repository\CopyDefinitionRepository;
 use App\Core\Order\Entity\Order;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use DateTime;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-#[ORM\Entity()]
+#[ORM\Entity(repositoryClass: CopyDefinitionRepository::class)]
 #[ORM\Table(name: "copy_definition")]
 class CopyDefinition
 {
@@ -20,7 +21,7 @@ class CopyDefinition
     private int $id;
 
     #[ORM\Column(type: 'boolean')]
-    private bool $active;
+    private bool $active = true;
 
     #[ORM\Column(type: 'boolean')]
     private bool $archived = false;

@@ -9,7 +9,8 @@ api_platform:
         html: ['text/html']
     mapping:
         paths:
-            - '%kernel.project_dir%/src/Front/Resources/config/api_resources'
+            - '%kernel.project_dir%/src/Front/User/ApiResource'
+            - '%kernel.project_dir%/src/Front/Account/ApiResource'
     defaults:
         stateless: true
         cache_headers:
