@@ -3,6 +3,7 @@
 namespace App\Core\User\Entity;
 
 use App\Core\Account\Entity\Account;
+use App\Core\Resource\Model\ResourceInterface;
 use App\Core\User\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -12,7 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: "hermes_user")]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements ResourceInterface, UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

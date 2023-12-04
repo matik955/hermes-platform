@@ -3,21 +3,13 @@
 namespace App\Core\Account\Repository;
 
 use App\Core\Account\Entity\CopyDefinition;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use App\Core\Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
-/**
- * @extends ServiceEntityRepository<CopyDefinition>
- *
- * @method CopyDefinition|null find($id, $lockMode = null, $lockVersion = null)
- * @method CopyDefinition|null findOneBy(array $criteria, array $orderBy = null)
- * @method CopyDefinition[]    findAll()
- * @method CopyDefinition[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- */
-class CopyDefinitionRepository extends ServiceEntityRepository
+class CopyDefinitionRepository extends EntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        parent::__construct($registry, CopyDefinition::class);
+        parent::__construct($entityManager, $this->_em->getClassMetadata(CopyDefinition::class));
     }
 }

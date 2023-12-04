@@ -4,6 +4,7 @@ namespace App\Core\Account\Entity;
 
 use App\Core\Account\Repository\AccountRepository;
 use App\Core\Order\Entity\Order;
+use App\Core\Resource\Model\ResourceInterface;
 use App\Core\User\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -14,7 +15,7 @@ use DateTime;
 
 #[ORM\Entity(repositoryClass: AccountRepository::class)]
 #[ORM\Table(name: "account")]
-class Account
+class Account implements ResourceInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

@@ -4,6 +4,7 @@ namespace App\Core\Account\Entity;
 
 use App\Core\Account\Repository\CopyDefinitionRepository;
 use App\Core\Order\Entity\Order;
+use App\Core\Resource\Model\ResourceInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -13,7 +14,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: CopyDefinitionRepository::class)]
 #[ORM\Table(name: "copy_definition")]
-class CopyDefinition
+class CopyDefinition implements ResourceInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

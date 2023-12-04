@@ -4,6 +4,7 @@ namespace App\Core\Order\Entity;
 
 use App\Core\Account\Entity\Account;
 use App\Core\Account\Entity\CopyDefinition;
+use App\Core\Resource\Model\ResourceInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -11,7 +12,7 @@ use DateTime;
 
 #[ORM\Entity()]
 #[ORM\Table(name: "hermes_order")]
-class Order
+class Order implements ResourceInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
