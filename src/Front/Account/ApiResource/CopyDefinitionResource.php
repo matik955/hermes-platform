@@ -14,8 +14,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     shortName: 'CopyDefinition',
     operations: [
-        new Get(),
-        new GetCollection()
+        new Get(name:'GetSingleCopyDefinition'),
+        new GetCollection(name:'GetCopyDefinitions')
     ],
     provider: CopyDefinitionProvider::class,
     stateOptions: new Options(entityClass: CopyDefinition::class)

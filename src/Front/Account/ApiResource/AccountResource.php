@@ -18,8 +18,8 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 #[ApiResource(
     shortName: 'Account',
     operations: [
-        new Get(),
-        new GetCollection()
+        new Get(name:'GetSingleAccount'),
+        new GetCollection(name:'GetAccounts')
     ],
     normalizationContext: [
         AbstractObjectNormalizer::SKIP_NULL_VALUES => true,
