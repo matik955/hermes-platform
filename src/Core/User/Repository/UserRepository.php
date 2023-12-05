@@ -13,7 +13,7 @@ class UserRepository extends EntityRepository implements PasswordUpgraderInterfa
 {
     public function __construct(EntityManagerInterface $entityManager)
     {
-        parent::__construct($entityManager, $this->_em->getClassMetadata(User::class));
+        parent::__construct($entityManager, $entityManager->getClassMetadata(User::class));
     }
 
     /**

@@ -10,6 +10,6 @@ class CopyDefinitionRepository extends EntityRepository
 {
     public function __construct(EntityManagerInterface $entityManager)
     {
-        parent::__construct($entityManager, $this->_em->getClassMetadata(CopyDefinition::class));
+        parent::__construct($entityManager, $entityManager->getClassMetadata(CopyDefinition::class));
     }
 }

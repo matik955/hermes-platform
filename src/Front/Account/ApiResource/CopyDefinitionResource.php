@@ -9,13 +9,18 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use App\Core\Account\Entity\CopyDefinition;
 use App\Front\Account\State\Provider\CopyDefinitionProvider;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
     shortName: 'CopyDefinition',
     operations: [
-        new Get(name:'GetSingleCopyDefinition'),
-        new GetCollection(name:'GetCopyDefinitions')
+        new Get(
+            uriTemplate: '/copy-definitions/{id}',
+            name: 'GetSingleCopyDefinition',
+        ),
+        new GetCollection(
+            uriTemplate: '/copy-definitions',
+            name:'GetCopyDefinitions'
+        )
     ],
     provider: CopyDefinitionProvider::class,
     stateOptions: new Options(entityClass: CopyDefinition::class)
