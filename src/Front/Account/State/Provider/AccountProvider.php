@@ -6,6 +6,7 @@ use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Core\Account\Entity\Account;
+use App\Core\Account\Entity\CopyDefinition;
 use App\Front\Account\ApiResource\AccountResource;
 use App\Front\Account\ApiResource\CopyDefinitionResource;
 use App\Front\User\ApiResource\UserResource;
@@ -48,8 +49,14 @@ final class AccountProvider implements ProviderInterface
 
             $sourceDefinitions = [];
 
+            /** @var CopyDefinition $sourceDefinition */
             foreach ($entity->getSourceDefinitions() as $sourceDefinition) {
-                $copyDefinition = new CopyDefinitionResource();
+                $copyDefinition = new CopyDefinitionResource(
+                    $sourceDefinition->getId(),
+                    $sourceDefinition->isActive(),
+                    $sourceDefinition->isArchived(),
+                    $sourceDefinition->getCreatedAt(),
+                );
                 $copyDefinition->setId($sourceDefinition->getId());
 
                 $sourceDefinitions[] = $copyDefinition;

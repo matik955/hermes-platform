@@ -49,8 +49,13 @@ class CopyDefinition implements ResourceInterface
     #[ORM\OneToMany(mappedBy: 'copyDefinition', targetEntity: Order::class)]
     private Collection $orders;
 
-    public function __construct()
+    public function __construct(
+        Account $sourceAccount,
+        Account $targetAccount
+    )
     {
+        $this->sourceAccount = $sourceAccount;
+        $this->targetAccount = $targetAccount;
         $this->orders = new ArrayCollection();
     }
 

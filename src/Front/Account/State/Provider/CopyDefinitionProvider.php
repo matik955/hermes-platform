@@ -5,11 +5,9 @@ namespace App\Front\Account\State\Provider;
 use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
-use App\Core\Account\Entity\Account;
 use App\Core\Account\Entity\CopyDefinition;
 use App\Front\Account\ApiResource\AccountResource;
 use App\Front\Account\ApiResource\CopyDefinitionResource;
-use App\Front\User\ApiResource\UserResource;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 final class CopyDefinitionProvider implements ProviderInterface
@@ -29,8 +27,37 @@ final class CopyDefinitionProvider implements ProviderInterface
         $dtos = [];
 
         foreach ($entities as $entity) {
-            $dto = new CopyDefinitionResource();
-            $dto->setId($entity->getId());
+            $sourceAccount = $entity->getSourceAccount();
+            $sourceAccountResource = new AccountResource(
+                $sourceAccount->getLogin(),
+                $sourceAccount->getPassword(),
+                $sourceAccount->getTradeServer(),
+                $sourceAccount->getMtVersion(),
+                $sourceAccount->getBalance(),
+            );
+
+            $sourceAccountResource->setId($sourceAccount->getId());
+
+            $targetAccount = $entity->getTargetAccount();
+            $targetAccountResource = new AccountResource(
+                $targetAccount->getLogin(),
+                $targetAccount->getPassword(),
+                $targetAccount->getTradeServer(),
+                $targetAccount->getMtVersion(),
+                $targetAccount->getBalance(),
+            );
+
+            $targetAccountResource->setId($targetAccount->getId());
+
+
+            $dto = new CopyDefinitionResource(
+                $entity->getId(),
+                $entity->isActive(),
+                $entity->isArchived(),
+                $entity->getCreatedAt(),
+                $sourceAccountResource,
+                $targetAccountResource,
+            );
 
             $dtos[] = $dto;
         }

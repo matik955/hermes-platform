@@ -18,8 +18,14 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 #[ApiResource(
     shortName: 'Account',
     operations: [
-        new Get(name:'GetSingleAccount'),
-        new GetCollection(name:'GetAccounts')
+        new Get(
+            uriTemplate: '/accounts/{id}',
+            name: 'GetSingleAccount'
+        ),
+        new GetCollection(
+            uriTemplate: '/accounts',
+            name:'GetAccounts'
+        )
     ],
     normalizationContext: [
         AbstractObjectNormalizer::SKIP_NULL_VALUES => true,
@@ -46,7 +52,6 @@ class AccountResource
 
     private ?float $balance = null;
 
-    #[Groups(groups: ['Account:read'])]
     private ?UserResource $user;
 
     /**
@@ -61,7 +66,7 @@ class AccountResource
         string $tradeServer,
         int    $mtVersion,
         float  $balance,
-        UserResource $user
+        ?UserResource $user = null
     )
     {
         $this->login = $login;
@@ -107,7 +112,7 @@ class AccountResource
         return $this->balance;
     }
 
-    public function getUser(): UserResource
+    public function getUser(): ?UserResource
     {
         return $this->user;
     }

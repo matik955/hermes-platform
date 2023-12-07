@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     shortName: 'User',
     operations: [
-        new Post(processor: CreateUserProcessor::class,),
+        new Post(processor: CreateUserProcessor::class),
         new Get(name: 'GetSingleUser'),
         new GetCollection(name:'GetUsers'),
     ],
@@ -30,11 +30,9 @@ class UserResource
     private ?int $id = null;
 
     #[Assert\NotNull]
-    #[Groups(groups: ['Account:read'])]
     private ?string $email;
 
     #[Assert\NotNull]
-    #[Groups(groups: ['Account:read'])]
     private array $roles = [];
 
     #[Assert\NotNull]
