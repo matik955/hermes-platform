@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     shortName: 'User',
     operations: [
-        new Post(processor: CreateUserProcessor::class)
+        new Post(processor: CreateUserProcessor::class,),
         new Get(name: 'GetSingleUser'),
         new GetCollection(name:'GetUsers'),
     ],

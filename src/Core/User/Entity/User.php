@@ -34,11 +34,9 @@ class User implements ResourceInterface, UserInterface, PasswordAuthenticatedUse
 
     public function __construct(
         string $email,
-        string $password
     )
     {
         $this->email = $email;
-        $this->password = $password;
         $this->accounts = new ArrayCollection();
     }
 

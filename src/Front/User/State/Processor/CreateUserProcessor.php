@@ -9,6 +9,7 @@ use App\Core\User\Entity\User;
 use App\Core\User\Repository\UserRepository;
 use App\Front\User\ApiResource\UserResource;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final class CreateUserProcessor implements ProcessorInterface
 {
@@ -16,7 +17,8 @@ final class CreateUserProcessor implements ProcessorInterface
 
     public function __construct(
         #[Autowire(service: PersistProcessor::class)]
-        private ProcessorInterface $persistProcessor
+        private ProcessorInterface $persistProcessor,
+        private UserPasswordHasherInterface $passwordHasher
     )
     {
     }
@@ -27,8 +29,14 @@ final class CreateUserProcessor implements ProcessorInterface
 
         $entity = new User(
             $data->getEmail(),
-            $data->getPassword(),
         );
+
+        $hashedPassword = $this->passwordHasher->hashPassword(
+            $entity,
+            $data->getPassword()
+        );
+
+        $entity->setPassword($hashedPassword);
 
         $this->persistProcessor->process($entity, $operation, $uriVariables);
         $data->setId($entity->getId());
