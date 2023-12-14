@@ -38,7 +38,7 @@ class Account implements ResourceInterface
     private ?float $balance;
 
     #[ORM\Column(type: 'boolean')]
-    private bool $archived;
+    private bool $archived = false;
 
     #[Gedmo\Timestampable(on: 'create')]
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
@@ -127,6 +127,12 @@ class Account implements ResourceInterface
     {
         return $this->createdAt;
     }
+
+    public function setCreatedAt(DateTime $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
 
     public function getArchivedAt(): ?DateTime
     {
