@@ -108,4 +108,21 @@ class User implements ResourceInterface, UserInterface, PasswordAuthenticatedUse
     {
         // $this->plainPassword = null;
     }
+
+    public function getAccounts(): Collection
+    {
+        return $this->accounts;
+    }
+
+    public function addAccount(Account $account): void
+    {
+        if (!$this->accounts->contains($account)) {
+            $this->accounts->add($account);
+        }
+    }
+
+    public function removeAccount(Account $account): void
+    {
+        $this->accounts->removeElement($account);
+    }
 }
