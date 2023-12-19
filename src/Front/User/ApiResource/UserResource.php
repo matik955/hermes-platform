@@ -30,6 +30,7 @@ class UserResource
     private ?int $id = null;
 
     #[Assert\NotNull]
+    #[Assert\Email]
     #[Groups(groups: ['Account:read'])]
     private ?string $email;
 

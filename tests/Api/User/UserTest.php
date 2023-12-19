@@ -15,9 +15,10 @@ class UserTest extends AbstractTest
 
     public function testGetCollection(): void
     {
+        UserFactory::createOne(['email' => 'admin@example.com', 'password' => 'admin']);
         UserFactory::createMany(100);
 
-        $response = static::createClient()->request('GET', '/api/users');
+        $response = static::createClientWithCredentials()->request('GET', '/api/users');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
@@ -26,11 +27,16 @@ class UserTest extends AbstractTest
 
     public function testCreateUser(): void
     {
-        $response = static::createClient()->request('POST', '/api/users', ['json' => [
-            'email' => 'new@user.pl',
-            'password' => 'zdf!23$g%d',
-            'roles' => [],
-        ]]);
+        $response = static::createClient()->request('POST', '/api/users', [
+            'json' => [
+                'email' => 'new@user.pl',
+                'password' => 'zdf!23$g%d',
+                'roles' => [],
+            ],
+            'headers' => [
+                'content-type' => 'application/ld+json'
+            ],
+        ]);
 
         $this->assertResponseStatusCodeSame(201);
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
@@ -40,11 +46,17 @@ class UserTest extends AbstractTest
 
     public function testCreateInvalidUser(): void
     {
-        static::createClient()->request('POST', '/books', ['json' => [
-            'email' => 'invalid',
-        ]]);
+        static::createClient()->request('POST', '/api/users', [
+            'json' => [
+                'email' => 'invalid',
+                'password' => 'rt&xc76cxB',
+                'roles' => [],
+            ],
+            'headers' => [
+                'content-type' => 'application/ld+json'
+            ],
+        ]);
 
         $this->assertResponseStatusCodeSame(422);
-        $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
     }
 }
