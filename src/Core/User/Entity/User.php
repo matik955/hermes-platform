@@ -118,21 +118,15 @@ class User implements ResourceInterface, UserInterface, PasswordAuthenticatedUse
         return $this->accounts;
     }
 
-    public function addAccount(Account $account): self
+    public function addAccount(Account $account): void
     {
         if (!$this->accounts->contains($account)) {
             $this->accounts->add($account);
         }
-
-        return $this;
     }
 
-    public function removeAccount(Account $account): self
+    public function removeAccount(Account $account): void
     {
-        if ($this->accounts->contains($account)) {
-            $this->accounts->removeElement($account);
-        }
-
-        return $this;
+        $this->accounts->removeElement($account);
     }
 }

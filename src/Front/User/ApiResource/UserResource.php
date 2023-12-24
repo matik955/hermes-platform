@@ -31,10 +31,11 @@ class UserResource
     private ?int $id = null;
 
     #[Assert\NotNull]
+    #[Assert\Email]
+    #[Groups(groups: ['Account:read'])]
     private ?string $email;
 
-    #[Assert\NotNull]
-    private array $roles = [];
+    private array $roles;
 
     #[Assert\NotNull]
     private string $password;
@@ -44,8 +45,8 @@ class UserResource
 
     public function __construct(
         string $email,
-        array $roles,
-        string $password
+        string $password,
+        ?array $roles = [],
     )
     {
         $this->email = $email;

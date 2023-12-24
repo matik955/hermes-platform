@@ -129,6 +129,12 @@ class Account implements ResourceInterface
         return $this->createdAt;
     }
 
+    public function setCreatedAt(DateTime $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+
     public function getArchivedAt(): ?DateTime
     {
         return $this->archivedAt;

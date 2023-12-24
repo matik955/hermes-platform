@@ -3,7 +3,6 @@ security:
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
-    enable_authenticator_manager: true
     providers:
         hermes_user_provider:
             entity:
@@ -43,7 +42,7 @@ security:
         - { path: ^/api/docs, roles: PUBLIC_ACCESS }
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/users, methods: POST, roles: PUBLIC_ACCESS }
-        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
+#        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
     security:
