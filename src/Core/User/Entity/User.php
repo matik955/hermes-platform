@@ -29,7 +29,11 @@ class User implements ResourceInterface, UserInterface, PasswordAuthenticatedUse
     #[ORM\Column(type: 'string')]
     private string $password;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Account::class)]
+    #[ORM\OneToMany(
+        mappedBy: 'user',
+        targetEntity: Account::class,
+        cascade: ['persist', 'remove']
+    )]
     private Collection $accounts;
 
     public function __construct(
@@ -59,7 +63,7 @@ class User implements ResourceInterface, UserInterface, PasswordAuthenticatedUse
 
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**

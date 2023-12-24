@@ -52,7 +52,8 @@ final class AccountFactory extends ModelFactory
             'password' => self::faker()->text(),
             'tradeServer' => self::faker()->text(),
             'balance' => self::faker()->randomFloat(),
-            'created_at' => self::faker()->dateTime()
+            'created_at' => self::faker()->dateTime(),
+            'user' => UserFactory::createOne()
         ];
     }
 

@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use App\Core\User\Entity\User;
+use App\Front\Account\ApiResource\AccountResource;
 use App\Front\User\State\Processor\CreateUserProcessor;
 use App\Front\User\State\Provider\UserProvider;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -17,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     shortName: 'User',
     operations: [
-        new Post(processor: CreateUserProcessor::class,),
+        new Post(processor: CreateUserProcessor::class),
         new Get(name: 'GetSingleUser'),
         new GetCollection(name:'GetUsers'),
     ],
@@ -34,18 +35,18 @@ class UserResource
     #[Groups(groups: ['Account:read'])]
     private ?string $email;
 
-    #[Assert\NotNull]
-    #[Groups(groups: ['Account:read'])]
-    private array $roles = [];
+    private array $roles;
 
     #[Assert\NotNull]
     private string $password;
 
+    private ?AccountResource $account = null;
+
 
     public function __construct(
         string $email,
-        array $roles,
-        string $password
+        string $password,
+        ?array $roles = [],
     )
     {
         $this->email = $email;
@@ -76,5 +77,15 @@ class UserResource
     public function getPassword(): string
     {
         return $this->password;
+    }
+
+    public function getAccount(): ?AccountResource
+    {
+        return $this->account;
+    }
+
+    public function setAccount(AccountResource $account): void
+    {
+        $this->account = $account;
     }
 }

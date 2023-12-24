@@ -86,6 +86,7 @@ class Account implements ResourceInterface
         $this->sourceDefinitions = $sourceDefinitions ?? new ArrayCollection();
         $this->targetDefinitions = $targetDefinitions ?? new ArrayCollection();
         $this->orders = $orders ?? new ArrayCollection();
+        $this->createdAt = new DateTime();
     }
 
     public function getId(): int
