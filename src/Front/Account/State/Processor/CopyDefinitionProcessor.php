@@ -6,41 +6,40 @@ use ApiPlatform\Doctrine\Common\State\PersistProcessor;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Core\Account\Entity\Account;
+use App\Core\Account\Entity\CopyDefinition;
 use App\Core\Account\Repository\AccountRepository;
+use App\Core\Account\Repository\CopyDefinitionRepository;
 use App\Core\User\Entity\User;
 use App\Core\User\Repository\UserRepository;
 use App\Front\Account\ApiResource\AccountResource;
+use App\Front\Account\ApiResource\CopyDefinitionResource;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
-final class AccountProcessor implements ProcessorInterface
+final class CopyDefinitionProcessor implements ProcessorInterface
 {
-    private AccountRepository $accountRepository;
+    private CopyDefinitionRepository $copyDefinitionRepository;
 
     public function __construct(
         #[Autowire(service: PersistProcessor::class)]
         private readonly ProcessorInterface $persistProcessor,
-        private readonly UserRepository $userRepository
+        private readonly AccountRepository $accountRepository
     )
     {
     }
 
     public function process($data, Operation $operation, array $uriVariables = [], array $context = [])
     {
-        assert($data instanceof  AccountResource);
+        assert($data instanceof  CopyDefinitionResource);
 
         if ($data->getId()) {
-            $entity = $this->accountRepository->find($data->getId());
+            $entity = $this->copyDefinitionRepository->find($data->getId());
         } else {
-            /** @var User $user */
-            $user = $this->userRepository->findOneBy(['id' => $uriVariables['userId']]);
+            $sourceAccount = $this->accountRepository->findOneBy(['id' => $data->getSourceAccount()->getId()]);
+            $targetAccount = $this->accountRepository->findOneBy(['id' => $data->getTargetAccount()->getId()]);
 
-            $entity = new Account(
-                $data->getLogin(),
-                $data->getPassword(),
-                $data->getTradeServer(),
-                $data->getMtVersion(),
-                $data->getBalance(),
-                $user
+            $entity = new CopyDefinition(
+                $sourceAccount,
+                $targetAccount,
             );
         }
 

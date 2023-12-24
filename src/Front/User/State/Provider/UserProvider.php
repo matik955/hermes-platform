@@ -3,9 +3,10 @@
 namespace App\Front\User\State\Provider;
 
 use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
+use ApiPlatform\Doctrine\Orm\State\ItemProvider;
+use ApiPlatform\Metadata\CollectionOperationInterface;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
-use App\Core\User\Entity\User;
 use App\Front\User\ApiResource\UserResource;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
@@ -13,29 +14,46 @@ final class UserProvider implements ProviderInterface
 {
     public function __construct(
         #[Autowire(service: CollectionProvider::class)]
-        private ProviderInterface $collectionProvider
+        private readonly ProviderInterface $collectionProvider,
+        #[Autowire(service: ItemProvider::class)]
+        private readonly ProviderInterface $itemProvider,
     )
     {
     }
 
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {
-        /** @var User[] $entities */
-        $entities = $this->collectionProvider->provide($operation, $uriVariables, $context);
+        if ($operation instanceof CollectionOperationInterface) {
+            /** @var UserResource[] $entities */
+            $entities = $this->collectionProvider->provide($operation, $uriVariables, $context);
 
-        $dtos = [];
+            $dtos = [];
 
-        foreach ($entities as $entity) {
-            $dto = new UserResource(
-                $entity->getEmail(),
-                $entity->getRoles(),
-                $entity->getPassword()
-            );
+            foreach ($entities as $entity) {
+                $dtos[] = $this->mapEntityToDto($entity);
+            }
 
-            $dto->setId($entity->getId());
-            $dtos[] = $dto;
+            return $dtos;
         }
 
-        return $dtos;
+        $entity = $this->itemProvider->provide($operation, $uriVariables, $context);
+
+        if (!$entity) {
+            return null;
+        }
+
+        return $this->mapEntityToDto($entity);
+    }
+
+    private function mapEntityToDto(object $entity): object
+    {
+        $dto = new UserResource(
+            $entity->getEmail(),
+            $entity->getRoles(),
+            $entity->getPassword()
+        );
+
+        $dto->setId($entity->getId());
+        return $dto;
     }
 }

@@ -38,7 +38,7 @@ class Account implements ResourceInterface
     private ?float $balance;
 
     #[ORM\Column(type: 'boolean')]
-    private bool $archived;
+    private bool $archived = false;
 
     #[Gedmo\Timestampable(on: 'create')]
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
@@ -86,6 +86,7 @@ class Account implements ResourceInterface
         $this->sourceDefinitions = $sourceDefinitions ?? new ArrayCollection();
         $this->targetDefinitions = $targetDefinitions ?? new ArrayCollection();
         $this->orders = $orders ?? new ArrayCollection();
+        $this->createdAt = new DateTime();
     }
 
     public function getId(): int

@@ -7,10 +7,13 @@ use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Post;
 use App\Core\Account\Entity\Account;
 use App\Front\Account\State\Processor\AccountProcessor;
 use App\Front\Account\State\Provider\AccountProvider;
 use App\Front\User\ApiResource\UserResource;
+use App\Front\User\State\Processor\CreateUserProcessor;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
@@ -24,7 +27,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
         ),
         new GetCollection(
             uriTemplate: '/accounts',
-            name:'GetAccounts'
+            name: 'GetAccounts'
         )
     ],
     normalizationContext: [
@@ -34,6 +37,18 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
     provider: AccountProvider::class,
     processor: AccountProcessor::class,
     stateOptions: new Options(entityClass: Account::class),
+)]
+#[ApiResource(
+    uriTemplate: '/user/{userId}/accounts',
+    shortName: 'Account',
+    operations: [
+        new GetCollection(provider: AccountProvider::class),
+        new Post(processor: AccountProcessor::class),
+    ],
+    uriVariables: [
+        'userId' => new Link(toProperty: 'user', fromClass: UserResource::class),
+    ],
+    stateOptions: new Options(entityClass: Account::class)
 )]
 class AccountResource
 {
@@ -61,11 +76,11 @@ class AccountResource
     public array $sourceDefinitions = [];
 
     public function __construct(
-        ?string $login,
-        string $password,
-        string $tradeServer,
-        int    $mtVersion,
-        float  $balance,
+        ?string       $login,
+        string        $password,
+        string        $tradeServer,
+        int           $mtVersion,
+        float         $balance,
         ?UserResource $user = null
     )
     {

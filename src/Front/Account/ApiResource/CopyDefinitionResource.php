@@ -8,9 +8,10 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Post;
 use App\Core\Account\Entity\CopyDefinition;
+use App\Front\Account\State\Processor\CopyDefinitionProcessor;
 use App\Front\Account\State\Provider\CopyDefinitionProvider;
-use Symfony\Component\Serializer\Annotation\Groups;
 use DateTime;
 
 #[ApiResource(
@@ -32,7 +33,8 @@ use DateTime;
     uriTemplate: '/accounts/{accountId}/copy-definitions',
     shortName: 'CopyDefinition',
     operations: [
-        new GetCollection(provider: CopyDefinitionProvider::class)
+        new GetCollection(provider: CopyDefinitionProvider::class),
+        new Post(processor: CopyDefinitionProcessor::class),
     ],
     uriVariables: [
         'accountId' => new Link(toProperty: 'sourceAccount', fromClass: AccountResource::class),
@@ -42,11 +44,11 @@ use DateTime;
 class CopyDefinitionResource
 {
     #[ApiProperty(readable: false, writable: false, identifier: true)]
-    private int $id;
+    private ?int $id = null;
 
-    private bool $active;
+    private bool $active = true;
 
-    private bool $archived;
+    private bool $archived = false;
 
     private DateTime $createdAt;
 
@@ -57,18 +59,10 @@ class CopyDefinitionResource
     private ?AccountResource $targetAccount;
 
     public function __construct(
-        int $id,
-        bool $active,
-        bool $archived,
-        DateTime $createdAt,
         ?AccountResource $sourceAccount = null,
         ?AccountResource $targetAccount = null,
     )
     {
-        $this->id = $id;
-        $this->active = $active;
-        $this->archived = $archived;
-        $this->createdAt = $createdAt;
         $this->sourceAccount = $sourceAccount;
         $this->targetAccount = $targetAccount;
     }

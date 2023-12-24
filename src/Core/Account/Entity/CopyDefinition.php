@@ -57,6 +57,7 @@ class CopyDefinition implements ResourceInterface
         $this->sourceAccount = $sourceAccount;
         $this->targetAccount = $targetAccount;
         $this->orders = new ArrayCollection();
+        $this->createdAt = new DateTime();
     }
 
     public function getId(): int

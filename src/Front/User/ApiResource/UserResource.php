@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use App\Core\User\Entity\User;
+use App\Front\Account\ApiResource\AccountResource;
 use App\Front\User\State\Processor\CreateUserProcessor;
 use App\Front\User\State\Provider\UserProvider;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -37,6 +38,8 @@ class UserResource
 
     #[Assert\NotNull]
     private string $password;
+
+    private ?AccountResource $account = null;
 
 
     public function __construct(
@@ -73,5 +76,15 @@ class UserResource
     public function getPassword(): string
     {
         return $this->password;
+    }
+
+    public function getAccount(): ?AccountResource
+    {
+        return $this->account;
+    }
+
+    public function setAccount(AccountResource $account): void
+    {
+        $this->account = $account;
     }
 }
