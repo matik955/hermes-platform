@@ -49,8 +49,8 @@ final class UserProvider implements ProviderInterface
     {
         $dto = new UserResource(
             $entity->getEmail(),
-            $entity->getRoles(),
-            $entity->getPassword()
+            $entity->getPassword(),
+            $entity->getRoles()
         );
 
         $dto->setId($entity->getId());
