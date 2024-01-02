@@ -14,6 +14,7 @@ use App\Front\User\State\Processor\CreateUserProcessor;
 use App\Front\User\State\Provider\UserProvider;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Core\User\Validator as UserAssert;
 
 #[ApiResource(
     shortName: 'User',
@@ -25,6 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     provider: UserProvider::class,
     stateOptions: new Options(entityClass: User::class)
 )]
+#[UserAssert\UniqueUser]
 class UserResource
 {
     #[ApiProperty(readable: false, writable: false, identifier: true)]

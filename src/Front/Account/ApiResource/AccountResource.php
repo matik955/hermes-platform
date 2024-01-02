@@ -13,10 +13,9 @@ use App\Core\Account\Entity\Account;
 use App\Front\Account\State\Processor\AccountProcessor;
 use App\Front\Account\State\Provider\AccountProvider;
 use App\Front\User\ApiResource\UserResource;
-use App\Front\User\State\Processor\CreateUserProcessor;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use App\Core\Account\Validator as AccountAssert;
 
 #[ApiResource(
     shortName: 'Account',
@@ -50,6 +49,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
     ],
     stateOptions: new Options(entityClass: Account::class)
 )]
+#[AccountAssert\UniqueAccount]
 class AccountResource
 {
     #[ApiProperty(readable: false, writable: false, identifier: true)]
