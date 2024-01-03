@@ -7,7 +7,7 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Core\User\Entity\User;
 use App\Core\User\Repository\UserRepository;
-use App\Front\User\ApiResource\UserResource;
+use App\Admin\User\ApiResource\UserResource;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 

@@ -5,10 +5,9 @@ namespace App\Front\User\ApiResource;
 use ApiPlatform\Doctrine\Orm\State\Options;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use App\Core\User\Entity\User;
+use App\Core\User\Interface\UserResourceInterface;
 use App\Front\Account\ApiResource\AccountResource;
 use App\Front\User\State\Processor\CreateUserProcessor;
 use App\Front\User\State\Provider\UserProvider;
@@ -19,15 +18,17 @@ use App\Core\User\Validator as UserAssert;
 #[ApiResource(
     shortName: 'User',
     operations: [
-        new Post(processor: CreateUserProcessor::class),
-        new Get(name: 'GetSingleUser'),
-        new GetCollection(name:'GetUsers'),
+        new Post(
+            uriTemplate: '/front/users',
+            name: 'front_add_user',
+            processor: CreateUserProcessor::class
+        ),
     ],
     provider: UserProvider::class,
     stateOptions: new Options(entityClass: User::class)
 )]
 #[UserAssert\UniqueUser]
-class UserResource
+class UserResource implements UserResourceInterface
 {
     #[ApiProperty(readable: false, writable: false, identifier: true)]
     private ?int $id = null;

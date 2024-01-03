@@ -21,11 +21,11 @@ use App\Core\Account\Validator as AccountAssert;
     shortName: 'Account',
     operations: [
         new Get(
-            uriTemplate: '/accounts/{id}',
+            uriTemplate: '/admin/accounts/{id}',
             name: 'admin_get_single_account'
         ),
         new GetCollection(
-            uriTemplate: '/accounts',
+            uriTemplate: '/admin/accounts',
             name: 'admin_get_account_collection'
         )
     ],
@@ -38,11 +38,17 @@ use App\Core\Account\Validator as AccountAssert;
     stateOptions: new Options(entityClass: Account::class),
 )]
 #[ApiResource(
-    uriTemplate: '/user/{userId}/accounts',
+    uriTemplate: '/admin/user/{userId}/accounts',
     shortName: 'Account',
     operations: [
-        new GetCollection(provider: AccountProvider::class),
-        new Post(processor: AccountProcessor::class),
+        new GetCollection(
+            name: 'admin_get_user_accounts',
+            provider: AccountProvider::class
+        ),
+        new Post(
+            name: 'admin_add_user_account',
+            processor: AccountProcessor::class
+        ),
     ],
     uriVariables: [
         'userId' => new Link(toProperty: 'user', fromClass: UserResource::class),

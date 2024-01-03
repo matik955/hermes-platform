@@ -53,8 +53,8 @@ final class AccountProvider implements ProviderInterface
 
         $userDto = new UserResource(
             $user->getEmail(),
+            $user->getPassword(),
             $user->getRoles(),
-            $user->getPassword()
         );
         $userDto->setId($user->getId());
 

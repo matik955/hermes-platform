@@ -18,23 +18,29 @@ use DateTime;
     shortName: 'CopyDefinition',
     operations: [
         new Get(
-            uriTemplate: '/copy-definitions/{id}',
-            name: 'GetSingleCopyDefinition',
+            uriTemplate: '/front/copy-definitions/{id}',
+            name: 'front_get_single_copy_definition',
         ),
         new GetCollection(
-            uriTemplate: '/copy-definitions',
-            name: 'GetCopyDefinitions'
+            uriTemplate: '/front/copy-definitions',
+            name: 'front_get_copy_definition_collection'
         )
     ],
     provider: CopyDefinitionProvider::class,
     stateOptions: new Options(entityClass: CopyDefinition::class)
 )]
 #[ApiResource(
-    uriTemplate: '/accounts/{accountId}/copy-definitions',
+    uriTemplate: '/front/accounts/{accountId}/copy-definitions',
     shortName: 'CopyDefinition',
     operations: [
-        new GetCollection(provider: CopyDefinitionProvider::class),
-        new Post(processor: CopyDefinitionProcessor::class),
+        new GetCollection(
+            name: 'front_get_account_copy_definition_collection',
+            provider: CopyDefinitionProvider::class
+        ),
+        new Post(
+            name: 'front_add_account_copy_definition',
+            processor: CopyDefinitionProcessor::class
+        ),
     ],
     uriVariables: [
         'accountId' => new Link(toProperty: 'sourceAccount', fromClass: AccountResource::class),

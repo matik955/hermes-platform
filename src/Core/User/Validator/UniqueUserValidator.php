@@ -2,8 +2,8 @@
 
 namespace App\Core\User\Validator;
 
+use App\Core\User\Interface\UserResourceInterface;
 use App\Core\User\Repository\UserRepository;
-use App\Front\User\ApiResource\UserResource;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
@@ -17,12 +17,12 @@ class UniqueUserValidator extends ConstraintValidator
     }
 
     /**
-     * @param UserResource $receipt
+     * @param UserResourceInterface $receipt
      */
     public function validate($receipt, Constraint $constraint): void
     {
-        if (!$receipt instanceof UserResource) {
-            throw new UnexpectedValueException($receipt, UserResource::class);
+        if (!$receipt instanceof UserResourceInterface) {
+            throw new UnexpectedValueException($receipt, UserResourceInterface::class);
         }
 
         if (!$constraint instanceof UniqueUser) {

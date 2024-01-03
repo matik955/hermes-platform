@@ -21,13 +21,18 @@ use App\Core\Account\Validator as AccountAssert;
     shortName: 'Account',
     operations: [
         new Get(
-            uriTemplate: '/accounts/{id}',
+            uriTemplate: '/front/accounts/{id}',
             name: 'front_get_single_account'
         ),
         new GetCollection(
-            uriTemplate: '/accounts',
+            uriTemplate: '/front/accounts',
             name: 'front_get_account_collection'
-        )
+        ),
+        new Post(
+            uriTemplate: '/front/accounts',
+            name: 'front_add_user_account',
+            processor: AccountProcessor::class
+        ),
     ],
     normalizationContext: [
         AbstractObjectNormalizer::SKIP_NULL_VALUES => true,
@@ -36,18 +41,6 @@ use App\Core\Account\Validator as AccountAssert;
     provider: AccountProvider::class,
     processor: AccountProcessor::class,
     stateOptions: new Options(entityClass: Account::class),
-)]
-#[ApiResource(
-    uriTemplate: '/user/{userId}/accounts',
-    shortName: 'Account',
-    operations: [
-        new GetCollection(provider: AccountProvider::class),
-        new Post(processor: AccountProcessor::class),
-    ],
-    uriVariables: [
-        'userId' => new Link(toProperty: 'user', fromClass: UserResource::class),
-    ],
-    stateOptions: new Options(entityClass: Account::class)
 )]
 #[AccountAssert\UniqueAccount]
 class AccountResource

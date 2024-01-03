@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use App\Core\User\Entity\User;
+use App\Core\User\Interface\UserResourceInterface;
 use App\Front\Account\ApiResource\AccountResource;
 use App\Admin\User\State\Processor\CreateUserProcessor;
 use App\Admin\User\State\Provider\UserProvider;
@@ -19,15 +20,25 @@ use App\Core\User\Validator as UserAssert;
 #[ApiResource(
     shortName: 'User',
     operations: [
-        new Post(processor: CreateUserProcessor::class),
-        new Get(name: 'GetSingleUser'),
-        new GetCollection(name:'GetUsers'),
+        new Post(
+            uriTemplate: '/admin/users',
+            name: 'admin_add_user',
+            processor: CreateUserProcessor::class
+        ),
+        new Get(
+            uriTemplate: '/admin/users/{id}',
+            name: 'admin_get_single_user'
+        ),
+        new GetCollection(
+            uriTemplate: '/admin/users',
+            name:'admin_get_user_collection'
+        ),
     ],
     provider: UserProvider::class,
     stateOptions: new Options(entityClass: User::class)
 )]
 #[UserAssert\UniqueUser]
-class UserResource
+class UserResource implements UserResourceInterface
 {
     #[ApiProperty(readable: false, writable: false, identifier: true)]
     private ?int $id = null;
