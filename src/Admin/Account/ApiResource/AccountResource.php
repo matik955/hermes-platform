@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Front\Account\ApiResource;
+namespace App\Admin\Account\ApiResource;
 
 use ApiPlatform\Doctrine\Orm\State\Options;
 use ApiPlatform\Metadata\ApiProperty;
@@ -10,9 +10,9 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use App\Core\Account\Entity\Account;
-use App\Front\Account\State\Processor\AccountProcessor;
-use App\Front\Account\State\Provider\AccountProvider;
-use App\Front\User\ApiResource\UserResource;
+use App\Admin\Account\State\Processor\AccountProcessor;
+use App\Admin\Account\State\Provider\AccountProvider;
+use App\Admin\User\ApiResource\UserResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use App\Core\Account\Validator as AccountAssert;
@@ -22,11 +22,11 @@ use App\Core\Account\Validator as AccountAssert;
     operations: [
         new Get(
             uriTemplate: '/accounts/{id}',
-            name: 'front_get_single_account'
+            name: 'admin_get_single_account'
         ),
         new GetCollection(
             uriTemplate: '/accounts',
-            name: 'front_get_account_collection'
+            name: 'admin_get_account_collection'
         )
     ],
     normalizationContext: [
