@@ -13,21 +13,18 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        login:
-            pattern: ^/api/login
+
+        front_api:
+            pattern:   ^/api/front
+            provider: hermes_user_provider
             stateless: true
             json_login:
-                check_path: /api/login
+                check_path: /api/front/login
                 username_path: email
                 password_path: password
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
-
-        api:
-            pattern:   ^/api
-            stateless: true
-            provider: hermes_user_provider
-            jwt: ~
+            jwt: true
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -40,9 +37,9 @@ security:
     access_control:
         - { path: ^/api$, roles: PUBLIC_ACCESS } 
         - { path: ^/api/docs, roles: PUBLIC_ACCESS }
-        - { path: ^/api/login, roles: PUBLIC_ACCESS }
-        - { path: ^/api/users, methods: POST, roles: PUBLIC_ACCESS }
-#        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/front/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api/front/users, methods: POST, roles: PUBLIC_ACCESS }
+        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
     security:
