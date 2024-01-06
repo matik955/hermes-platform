@@ -30,7 +30,7 @@ class AbstractTest extends ApiTestCase
             return $this->token;
         }
 
-        $response = static::createClient()->request('POST', '/api/login', ['json' => $body ?: [
+        $response = static::createClient()->request('POST', '/api/front/login', ['json' => $body ?: [
             'email' => 'admin@example.com',
             'password' => 'admin',
         ]]);

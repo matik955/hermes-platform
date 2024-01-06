@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Tests\Api\User;
+namespace Api\Admin\User;
 
-use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
-use App\Front\User\ApiResource\UserResource;
+use App\Admin\User\ApiResource\UserResource;
 use App\Tests\Api\AbstractTest;
 use App\Tests\Factory\UserFactory;
 use Zenstruck\Foundry\Test\Factories;
@@ -18,7 +17,7 @@ class UserTest extends AbstractTest
         UserFactory::createOne(['email' => 'admin@example.com', 'password' => 'admin']);
         UserFactory::createMany(100);
 
-        $response = static::createClientWithCredentials()->request('GET', '/api/admin/users');
+        static::createClientWithCredentials()->request('GET', '/api/admin/users');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
