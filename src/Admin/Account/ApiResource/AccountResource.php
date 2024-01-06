@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Front\Account\ApiResource;
+namespace App\Admin\Account\ApiResource;
 
 use ApiPlatform\Doctrine\Orm\State\Options;
 use ApiPlatform\Metadata\ApiProperty;
@@ -10,9 +10,9 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use App\Core\Account\Entity\Account;
-use App\Front\Account\State\Processor\AccountProcessor;
-use App\Front\Account\State\Provider\AccountProvider;
-use App\Front\User\ApiResource\UserResource;
+use App\Admin\Account\State\Processor\AccountProcessor;
+use App\Admin\Account\State\Provider\AccountProvider;
+use App\Admin\User\ApiResource\UserResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use App\Core\Account\Validator as AccountAssert;
@@ -21,18 +21,13 @@ use App\Core\Account\Validator as AccountAssert;
     shortName: 'Account',
     operations: [
         new Get(
-            uriTemplate: '/front/accounts/{id}',
-            name: 'front_get_single_account'
+            uriTemplate: '/admin/accounts/{id}',
+            name: 'admin_get_single_account'
         ),
         new GetCollection(
-            uriTemplate: '/front/accounts',
-            name: 'front_get_account_collection'
-        ),
-        new Post(
-            uriTemplate: '/front/accounts',
-            name: 'front_add_user_account',
-            processor: AccountProcessor::class
-        ),
+            uriTemplate: '/admin/accounts',
+            name: 'admin_get_account_collection'
+        )
     ],
     normalizationContext: [
         AbstractObjectNormalizer::SKIP_NULL_VALUES => true,
@@ -41,6 +36,24 @@ use App\Core\Account\Validator as AccountAssert;
     provider: AccountProvider::class,
     processor: AccountProcessor::class,
     stateOptions: new Options(entityClass: Account::class),
+)]
+#[ApiResource(
+    uriTemplate: '/admin/user/{userId}/accounts',
+    shortName: 'Account',
+    operations: [
+        new GetCollection(
+            name: 'admin_get_user_accounts',
+            provider: AccountProvider::class
+        ),
+        new Post(
+            name: 'admin_add_user_account',
+            processor: AccountProcessor::class
+        ),
+    ],
+    uriVariables: [
+        'userId' => new Link(toProperty: 'user', fromClass: UserResource::class),
+    ],
+    stateOptions: new Options(entityClass: Account::class)
 )]
 #[AccountAssert\UniqueAccount]
 class AccountResource

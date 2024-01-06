@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Front\Account\State\Provider;
+namespace App\Admin\Account\State\Provider;
 
 use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
 use ApiPlatform\Doctrine\Orm\State\ItemProvider;
 use ApiPlatform\Metadata\CollectionOperationInterface;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
-use App\Core\Account\Entity\Account;
-use App\Front\Account\ApiResource\AccountResource;
-use App\Front\User\ApiResource\UserResource;
+use App\Admin\Account\ApiResource\AccountResource;
+use App\Admin\Account\ApiResource\CopyDefinitionResource;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
-final class AccountProvider implements ProviderInterface
+final class CopyDefinitionProvider implements ProviderInterface
 {
     public function __construct(
         #[Autowire(service: CollectionProvider::class)]
@@ -26,7 +25,7 @@ final class AccountProvider implements ProviderInterface
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {
         if ($operation instanceof CollectionOperationInterface) {
-            /** @var Account[] $entities */
+            /** @var CopyDefinitionResource[] $entities */
             $entities = $this->collectionProvider->provide($operation, $uriVariables, $context);
 
             $dtos = [];
@@ -49,22 +48,31 @@ final class AccountProvider implements ProviderInterface
 
     private function mapEntityToDto(object $entity): object
     {
-        $user = $entity->getUser();
-
-        $userDto = new UserResource(
-            $user->getEmail(),
-            $user->getPassword(),
-            $user->getRoles(),
+        $sourceAccount = $entity->getSourceAccount();
+        $sourceAccountResource = new AccountResource(
+            $sourceAccount->getLogin(),
+            $sourceAccount->getPassword(),
+            $sourceAccount->getTradeServer(),
+            $sourceAccount->getMtVersion(),
+            $sourceAccount->getBalance(),
         );
-        $userDto->setId($user->getId());
 
-        $dto = new AccountResource(
-            $entity->getLogin(),
-            $entity->getPassword(),
-            $entity->getTradeServer(),
-            $entity->getMtVersion(),
-            $entity->getBalance(),
-            $userDto
+        $sourceAccountResource->setId($sourceAccount->getId());
+
+        $targetAccount = $entity->getTargetAccount();
+        $targetAccountResource = new AccountResource(
+            $targetAccount->getLogin(),
+            $targetAccount->getPassword(),
+            $targetAccount->getTradeServer(),
+            $targetAccount->getMtVersion(),
+            $targetAccount->getBalance(),
+        );
+
+        $targetAccountResource->setId($targetAccount->getId());
+
+        $dto = new CopyDefinitionResource(
+            $sourceAccountResource,
+            $targetAccountResource,
         );
 
         $dto->setId($entity->getId());

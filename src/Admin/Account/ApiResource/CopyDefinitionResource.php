@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Front\Account\ApiResource;
+namespace App\Admin\Account\ApiResource;
 
 use ApiPlatform\Doctrine\Orm\State\Options;
 use ApiPlatform\Metadata\ApiProperty;
@@ -10,8 +10,8 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use App\Core\Account\Entity\CopyDefinition;
-use App\Front\Account\State\Processor\CopyDefinitionProcessor;
-use App\Front\Account\State\Provider\CopyDefinitionProvider;
+use App\Admin\Account\State\Processor\CopyDefinitionProcessor;
+use App\Admin\Account\State\Provider\CopyDefinitionProvider;
 use DateTime;
 
 #[ApiResource(
@@ -19,11 +19,11 @@ use DateTime;
     operations: [
         new Get(
             uriTemplate: '/front/copy-definitions/{id}',
-            name: 'front_get_single_copy_definition',
+            name: 'admin_get_single_copy_definition',
         ),
         new GetCollection(
             uriTemplate: '/front/copy-definitions',
-            name: 'front_get_copy_definition_collection'
+            name: 'admin_get_copy_definition_collection'
         )
     ],
     provider: CopyDefinitionProvider::class,
@@ -34,11 +34,11 @@ use DateTime;
     shortName: 'CopyDefinition',
     operations: [
         new GetCollection(
-            name: 'front_get_account_copy_definition_collection',
+            name: 'admin_get_account_copy_definition_collection',
             provider: CopyDefinitionProvider::class
         ),
         new Post(
-            name: 'front_add_account_copy_definition',
+            name: 'admin_add_account_copy_definition',
             processor: CopyDefinitionProcessor::class
         ),
     ],

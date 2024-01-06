@@ -1,16 +1,18 @@
 <?php
 
-namespace App\Front\User\ApiResource;
+namespace App\Admin\User\ApiResource;
 
 use ApiPlatform\Doctrine\Orm\State\Options;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use App\Core\User\Entity\User;
 use App\Core\User\Interface\UserResourceInterface;
 use App\Front\Account\ApiResource\AccountResource;
-use App\Front\User\State\Processor\CreateUserProcessor;
-use App\Front\User\State\Provider\UserProvider;
+use App\Admin\User\State\Processor\CreateUserProcessor;
+use App\Admin\User\State\Provider\UserProvider;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Core\User\Validator as UserAssert;
@@ -19,9 +21,17 @@ use App\Core\User\Validator as UserAssert;
     shortName: 'User',
     operations: [
         new Post(
-            uriTemplate: '/front/users',
-            name: 'front_add_user',
+            uriTemplate: '/admin/users',
+            name: 'admin_add_user',
             processor: CreateUserProcessor::class
+        ),
+        new Get(
+            uriTemplate: '/admin/users/{id}',
+            name: 'admin_get_single_user'
+        ),
+        new GetCollection(
+            uriTemplate: '/admin/users',
+            name:'admin_get_user_collection'
         ),
     ],
     provider: UserProvider::class,

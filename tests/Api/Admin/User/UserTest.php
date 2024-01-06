@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Tests\Api\User;
+namespace Api\Admin\User;
 
-use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
-use App\Front\User\ApiResource\UserResource;
+use App\Admin\User\ApiResource\UserResource;
 use App\Tests\Api\AbstractTest;
 use App\Tests\Factory\UserFactory;
 use Zenstruck\Foundry\Test\Factories;
@@ -18,7 +17,7 @@ class UserTest extends AbstractTest
         UserFactory::createOne(['email' => 'admin@example.com', 'password' => 'admin']);
         UserFactory::createMany(100);
 
-        $response = static::createClientWithCredentials()->request('GET', '/api/users');
+        static::createClientWithCredentials()->request('GET', '/api/admin/users');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
@@ -27,7 +26,7 @@ class UserTest extends AbstractTest
 
     public function testCreateUser(): void
     {
-        $response = static::createClient()->request('POST', '/api/users', [
+        $response = static::createClient()->request('POST', '/api/admin/users', [
             'json' => [
                 'email' => 'new@user.pl',
                 'password' => 'zdf!23$g%d',
@@ -40,13 +39,13 @@ class UserTest extends AbstractTest
 
         $this->assertResponseStatusCodeSame(201);
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
-        $this->assertMatchesRegularExpression('~^/api/users/\d+$~', $response->toArray()['@id']);
+        $this->assertMatchesRegularExpression('~^/api/admin/users/\d+$~', $response->toArray()['@id']);
         $this->assertMatchesResourceItemJsonSchema(UserResource::class);
     }
 
     public function testCreateInvalidUser(): void
     {
-        static::createClient()->request('POST', '/api/users', [
+        static::createClient()->request('POST', '/api/admin/users', [
             'json' => [
                 'email' => 'invalid',
                 'password' => 'rt&xc76cxB',

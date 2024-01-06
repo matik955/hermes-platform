@@ -1,18 +1,16 @@
 <?php
 
-namespace App\Front\Account\State\Provider;
+namespace App\Admin\User\State\Provider;
 
 use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
 use ApiPlatform\Doctrine\Orm\State\ItemProvider;
 use ApiPlatform\Metadata\CollectionOperationInterface;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
-use App\Core\Account\Entity\Account;
-use App\Front\Account\ApiResource\AccountResource;
 use App\Front\User\ApiResource\UserResource;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
-final class AccountProvider implements ProviderInterface
+final class UserProvider implements ProviderInterface
 {
     public function __construct(
         #[Autowire(service: CollectionProvider::class)]
@@ -26,7 +24,7 @@ final class AccountProvider implements ProviderInterface
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {
         if ($operation instanceof CollectionOperationInterface) {
-            /** @var Account[] $entities */
+            /** @var UserResource[] $entities */
             $entities = $this->collectionProvider->provide($operation, $uriVariables, $context);
 
             $dtos = [];
@@ -49,22 +47,10 @@ final class AccountProvider implements ProviderInterface
 
     private function mapEntityToDto(object $entity): object
     {
-        $user = $entity->getUser();
-
-        $userDto = new UserResource(
-            $user->getEmail(),
-            $user->getPassword(),
-            $user->getRoles(),
-        );
-        $userDto->setId($user->getId());
-
-        $dto = new AccountResource(
-            $entity->getLogin(),
+        $dto = new UserResource(
+            $entity->getEmail(),
             $entity->getPassword(),
-            $entity->getTradeServer(),
-            $entity->getMtVersion(),
-            $entity->getBalance(),
-            $userDto
+            $entity->getRoles()
         );
 
         $dto->setId($entity->getId());

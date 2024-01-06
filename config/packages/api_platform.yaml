@@ -11,6 +11,8 @@ api_platform:
         paths:
             - '%kernel.project_dir%/src/Front/User/ApiResource'
             - '%kernel.project_dir%/src/Front/Account/ApiResource'
+            - '%kernel.project_dir%/src/Admin/User/ApiResource'
+            - '%kernel.project_dir%/src/Admin/Account/ApiResource'
     defaults:
         stateless: true
         cache_headers:

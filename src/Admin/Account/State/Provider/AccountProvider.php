@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Front\Account\State\Provider;
+namespace App\Admin\Account\State\Provider;
 
 use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
 use ApiPlatform\Doctrine\Orm\State\ItemProvider;
@@ -8,8 +8,8 @@ use ApiPlatform\Metadata\CollectionOperationInterface;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Core\Account\Entity\Account;
-use App\Front\Account\ApiResource\AccountResource;
-use App\Front\User\ApiResource\UserResource;
+use App\Admin\Account\ApiResource\AccountResource;
+use App\Admin\User\ApiResource\UserResource;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 final class AccountProvider implements ProviderInterface
