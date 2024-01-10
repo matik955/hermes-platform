@@ -18,11 +18,11 @@ use DateTime;
     shortName: 'CopyDefinition',
     operations: [
         new Get(
-            uriTemplate: '/front/copy-definitions/{id}',
+            uriTemplate: '/admin/copy-definitions/{id}',
             name: 'admin_get_single_copy_definition',
         ),
         new GetCollection(
-            uriTemplate: '/front/copy-definitions',
+            uriTemplate: '/admin/copy-definitions',
             name: 'admin_get_copy_definition_collection'
         )
     ],

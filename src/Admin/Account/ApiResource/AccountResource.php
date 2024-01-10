@@ -86,7 +86,7 @@ class AccountResource
         string        $password,
         string        $tradeServer,
         int           $mtVersion,
-        float         $balance,
+        ?float         $balance = null,
         ?UserResource $user = null
     )
     {

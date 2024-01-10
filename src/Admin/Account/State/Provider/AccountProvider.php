@@ -64,7 +64,7 @@ final class AccountProvider implements ProviderInterface
             $entity->getTradeServer(),
             $entity->getMtVersion(),
             $entity->getBalance(),
-            $userDto
+            $userDto,
         );
 
         $dto->setId($entity->getId());

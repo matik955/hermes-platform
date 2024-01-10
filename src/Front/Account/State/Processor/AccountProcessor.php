@@ -39,8 +39,8 @@ final class AccountProcessor implements ProcessorInterface
                 $data->getPassword(),
                 $data->getTradeServer(),
                 $data->getMtVersion(),
+                $user,
                 $data->getBalance(),
-                $user
             );
         }
 

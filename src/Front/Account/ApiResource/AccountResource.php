@@ -73,7 +73,6 @@ class AccountResource
         string        $password,
         string        $tradeServer,
         int           $mtVersion,
-        float         $balance,
         ?UserResource $user = null
     )
     {
@@ -81,7 +80,6 @@ class AccountResource
         $this->password = $password;
         $this->tradeServer = $tradeServer;
         $this->mtVersion = $mtVersion;
-        $this->balance = $balance;
         $this->user = $user;
     }
 
