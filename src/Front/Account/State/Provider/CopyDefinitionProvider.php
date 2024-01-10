@@ -54,7 +54,6 @@ final class CopyDefinitionProvider implements ProviderInterface
             $sourceAccount->getPassword(),
             $sourceAccount->getTradeServer(),
             $sourceAccount->getMtVersion(),
-            $sourceAccount->getBalance(),
         );
 
         $sourceAccountResource->setId($sourceAccount->getId());
@@ -65,7 +64,6 @@ final class CopyDefinitionProvider implements ProviderInterface
             $targetAccount->getPassword(),
             $targetAccount->getTradeServer(),
             $targetAccount->getMtVersion(),
-            $targetAccount->getBalance(),
         );
 
         $targetAccountResource->setId($targetAccount->getId());
