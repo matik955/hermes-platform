@@ -8,26 +8,28 @@ use ApiPlatform\Metadata\CollectionOperationInterface;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Core\Account\Entity\Account;
+use App\Core\Account\Repository\AccountRepository;
 use App\Front\Account\ApiResource\AccountResource;
 use App\Front\User\ApiResource\UserResource;
+use App\Front\User\Provider\FrontUserProvider;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 final class AccountProvider implements ProviderInterface
 {
     public function __construct(
-        #[Autowire(service: CollectionProvider::class)]
-        private readonly ProviderInterface $collectionProvider,
-        #[Autowire(service: ItemProvider::class)]
-        private readonly ProviderInterface $itemProvider,
+        private readonly FrontUserProvider $userProvider,
+        private readonly AccountRepository $accountRepository
     )
     {
     }
 
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {
+        $currentUser = $this->userProvider->getUser();
+
         if ($operation instanceof CollectionOperationInterface) {
             /** @var Account[] $entities */
-            $entities = $this->collectionProvider->provide($operation, $uriVariables, $context);
+            $entities = $currentUser->getAccounts();
 
             $dtos = [];
 
@@ -38,7 +40,10 @@ final class AccountProvider implements ProviderInterface
             return $dtos;
         }
 
-        $entity = $this->itemProvider->provide($operation, $uriVariables, $context);
+        $entity = $this->accountRepository->findOneBy([
+            'id' => $uriVariables['id'],
+            'user' => $currentUser->getId()
+        ]);
 
         if (!$entity) {
             return null;

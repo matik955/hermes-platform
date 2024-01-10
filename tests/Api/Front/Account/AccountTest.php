@@ -19,9 +19,13 @@ class AccountTest extends AbstractTest
         $user = UserFactory::createOne(['email' => 'admin@example.com', 'password' => 'admin']);
         AccountFactory::createOne(['user' => $user]);
 
-        static::createClientWithCredentials()->request('GET', '/api/front/accounts');
+        $user2 = UserFactory::createOne(['email' => 'admin2@example.com', 'password' => 'admin']);
+        AccountFactory::createOne(['user' => $user2]);
+
+        $response = static::createClientWithCredentials()->request('GET', '/api/front/accounts');
 
         $this->assertResponseIsSuccessful();
+        $this->assertCount(1, $response->toArray()['hydra:member']);
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
         $this->assertMatchesResourceCollectionJsonSchema(AccountResource::class);
     }
@@ -32,7 +36,7 @@ class AccountTest extends AbstractTest
 
         $response = static::createClientWithCredentials()->request('POST', '/api/front/accounts', [
             'json' => [
-                "login" => faker()->unique()->text(),
+                "login" => faker()->unique()->text(16),
                 "password" => faker()->password,
                 "tradeServer" => faker()->text,
                 "mtVersion" => 3,
