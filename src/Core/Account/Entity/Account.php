@@ -35,7 +35,7 @@ class Account implements ResourceInterface
     private int $mtVersion;
 
     #[ORM\Column(type: 'float', nullable: true)]
-    private ?float $balance;
+    private ?float $balance = null;
 
     #[ORM\Column(type: 'boolean')]
     private bool $archived = false;
@@ -69,8 +69,8 @@ class Account implements ResourceInterface
         string      $password,
         string      $tradeServer,
         int         $mtVersion,
-        float       $balance,
         User        $user,
+        ?float      $balance = null,
         ?Collection $sourceDefinitions = null,
         ?Collection $targetDefinitions = null,
         ?Collection $orders = null
