@@ -5,13 +5,9 @@ namespace App\Front\Account\State\Processor;
 use ApiPlatform\Doctrine\Common\State\PersistProcessor;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
-use App\Core\Account\Entity\Account;
 use App\Core\Account\Entity\CopyDefinition;
 use App\Core\Account\Repository\AccountRepository;
 use App\Core\Account\Repository\CopyDefinitionRepository;
-use App\Core\User\Entity\User;
-use App\Core\User\Repository\UserRepository;
-use App\Front\Account\ApiResource\AccountResource;
 use App\Front\Account\ApiResource\CopyDefinitionResource;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 

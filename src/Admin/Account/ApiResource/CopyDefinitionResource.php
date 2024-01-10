@@ -7,10 +7,7 @@ use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Link;
-use ApiPlatform\Metadata\Post;
 use App\Core\Account\Entity\CopyDefinition;
-use App\Admin\Account\State\Processor\CopyDefinitionProcessor;
 use App\Admin\Account\State\Provider\CopyDefinitionProvider;
 use DateTime;
 
@@ -27,24 +24,6 @@ use DateTime;
         )
     ],
     provider: CopyDefinitionProvider::class,
-    stateOptions: new Options(entityClass: CopyDefinition::class)
-)]
-#[ApiResource(
-    uriTemplate: '/front/accounts/{accountId}/copy-definitions',
-    shortName: 'CopyDefinition',
-    operations: [
-        new GetCollection(
-            name: 'admin_get_account_copy_definition_collection',
-            provider: CopyDefinitionProvider::class
-        ),
-        new Post(
-            name: 'admin_add_account_copy_definition',
-            processor: CopyDefinitionProcessor::class
-        ),
-    ],
-    uriVariables: [
-        'accountId' => new Link(toProperty: 'sourceAccount', fromClass: AccountResource::class),
-    ],
     stateOptions: new Options(entityClass: CopyDefinition::class)
 )]
 class CopyDefinitionResource
