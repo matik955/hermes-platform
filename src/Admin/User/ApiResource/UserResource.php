@@ -34,13 +34,14 @@ use App\Core\User\Validator as UserAssert;
             name:'admin_get_user_collection'
         ),
     ],
+    paginationItemsPerPage: 10,
     provider: UserProvider::class,
     stateOptions: new Options(entityClass: User::class)
 )]
 #[UserAssert\UniqueUser]
 class UserResource implements UserResourceInterface
 {
-    #[ApiProperty(readable: false, writable: false, identifier: true)]
+    #[ApiProperty(writable: false, identifier: true)]
     private ?int $id = null;
 
     #[Assert\NotNull]

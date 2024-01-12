@@ -2,8 +2,11 @@
 
 namespace App\Front\Account\State\Provider;
 
+use ApiPlatform\Doctrine\Orm\Paginator;
 use ApiPlatform\Metadata\CollectionOperationInterface;
 use ApiPlatform\Metadata\Operation;
+use ApiPlatform\State\Pagination\Pagination;
+use ApiPlatform\State\Pagination\TraversablePaginator;
 use ApiPlatform\State\ProviderInterface;
 use App\Core\Account\Entity\Account;
 use App\Core\Account\Repository\AccountRepository;
@@ -15,7 +18,8 @@ final class AccountProvider implements ProviderInterface
 {
     public function __construct(
         private readonly FrontUserProvider $userProvider,
-        private readonly AccountRepository $accountRepository
+        private readonly AccountRepository $accountRepository,
+        private readonly Pagination $pagination,
     )
     {
     }
@@ -25,8 +29,13 @@ final class AccountProvider implements ProviderInterface
         $currentUser = $this->userProvider->getUser();
 
         if ($operation instanceof CollectionOperationInterface) {
+            $currentPage = $this->pagination->getPage($context);
+            $itemsPerPage = $this->pagination->getLimit($operation, $context);
+
             /** @var Account[] $entities */
-            $entities = $currentUser->getAccounts();
+            $entities = $this->accountRepository->getAccountsForUser($currentUser->getId(), $currentPage, $itemsPerPage);
+
+            assert($entities instanceof Paginator);
 
             $dtos = [];
 
@@ -34,7 +43,12 @@ final class AccountProvider implements ProviderInterface
                 $dtos[] = $this->mapEntityToDto($entity);
             }
 
-            return $dtos;
+            return new TraversablePaginator(
+                new \ArrayIterator($dtos),
+                $entities->getCurrentPage(),
+                $entities->getItemsPerPage(),
+                $entities->getTotalItems()
+            );
         }
 
         $entity = $this->accountRepository->findOneBy([

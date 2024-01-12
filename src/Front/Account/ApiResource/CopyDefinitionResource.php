@@ -49,7 +49,7 @@ use DateTime;
 )]
 class CopyDefinitionResource
 {
-    #[ApiProperty(readable: false, writable: false, identifier: true)]
+    #[ApiProperty(writable: false, identifier: true)]
     private ?int $id = null;
 
     private bool $active = true;

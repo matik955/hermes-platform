@@ -2,10 +2,12 @@
 
 namespace App\Admin\Account\State\Provider;
 
+use ApiPlatform\Doctrine\Orm\Paginator;
 use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
 use ApiPlatform\Doctrine\Orm\State\ItemProvider;
 use ApiPlatform\Metadata\CollectionOperationInterface;
 use ApiPlatform\Metadata\Operation;
+use ApiPlatform\State\Pagination\TraversablePaginator;
 use ApiPlatform\State\ProviderInterface;
 use App\Core\Account\Entity\Account;
 use App\Admin\Account\ApiResource\AccountResource;
@@ -28,6 +30,7 @@ final class AccountProvider implements ProviderInterface
         if ($operation instanceof CollectionOperationInterface) {
             /** @var Account[] $entities */
             $entities = $this->collectionProvider->provide($operation, $uriVariables, $context);
+            assert($entities instanceof Paginator);
 
             $dtos = [];
 
@@ -35,7 +38,12 @@ final class AccountProvider implements ProviderInterface
                 $dtos[] = $this->mapEntityToDto($entity);
             }
 
-            return $dtos;
+            return new TraversablePaginator(
+                new \ArrayIterator($dtos),
+                $entities->getCurrentPage(),
+                $entities->getItemsPerPage(),
+                $entities->getTotalItems()
+            );
         }
 
         $entity = $this->itemProvider->provide($operation, $uriVariables, $context);

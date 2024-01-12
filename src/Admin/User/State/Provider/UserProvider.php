@@ -2,10 +2,12 @@
 
 namespace App\Admin\User\State\Provider;
 
+use ApiPlatform\Doctrine\Orm\Paginator;
 use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
 use ApiPlatform\Doctrine\Orm\State\ItemProvider;
 use ApiPlatform\Metadata\CollectionOperationInterface;
 use ApiPlatform\Metadata\Operation;
+use ApiPlatform\State\Pagination\TraversablePaginator;
 use ApiPlatform\State\ProviderInterface;
 use App\Front\User\ApiResource\UserResource;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -26,6 +28,7 @@ final class UserProvider implements ProviderInterface
         if ($operation instanceof CollectionOperationInterface) {
             /** @var UserResource[] $entities */
             $entities = $this->collectionProvider->provide($operation, $uriVariables, $context);
+            assert($entities instanceof Paginator);
 
             $dtos = [];
 
@@ -33,7 +36,12 @@ final class UserProvider implements ProviderInterface
                 $dtos[] = $this->mapEntityToDto($entity);
             }
 
-            return $dtos;
+            return new TraversablePaginator(
+                new \ArrayIterator($dtos),
+                $entities->getCurrentPage(),
+                $entities->getItemsPerPage(),
+                $entities->getTotalItems()
+            );
         }
 
         $entity = $this->itemProvider->provide($operation, $uriVariables, $context);

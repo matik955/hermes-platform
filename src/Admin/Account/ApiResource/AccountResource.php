@@ -33,6 +33,7 @@ use App\Core\Account\Validator as AccountAssert;
         AbstractObjectNormalizer::SKIP_NULL_VALUES => true,
 //        AbstractNormalizer::GROUPS => ['Account:read'],
     ],
+    paginationItemsPerPage: 10,
     provider: AccountProvider::class,
     processor: AccountProcessor::class,
     stateOptions: new Options(entityClass: Account::class),
@@ -53,12 +54,13 @@ use App\Core\Account\Validator as AccountAssert;
     uriVariables: [
         'userId' => new Link(toProperty: 'user', fromClass: UserResource::class),
     ],
+    paginationItemsPerPage: 10,
     stateOptions: new Options(entityClass: Account::class)
 )]
 #[AccountAssert\UniqueAccount]
 class AccountResource
 {
-    #[ApiProperty(readable: false, writable: false, identifier: true)]
+    #[ApiProperty(writable: false, identifier: true)]
     private ?int $id = null;
 
     #[Groups(groups: ['Account:read'])]
