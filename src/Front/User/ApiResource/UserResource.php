@@ -30,7 +30,7 @@ use App\Core\User\Validator as UserAssert;
 #[UserAssert\UniqueUser]
 class UserResource implements UserResourceInterface
 {
-    #[ApiProperty(readable: false, writable: false, identifier: true)]
+    #[ApiProperty(writable: false, identifier: true)]
     private ?int $id = null;
 
     #[Assert\NotNull]
