@@ -5,6 +5,7 @@ namespace App\Front\Account\ApiResource;
 use ApiPlatform\Doctrine\Orm\State\Options;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
@@ -32,6 +33,10 @@ use App\Core\Account\Validator as AccountAssert;
             uriTemplate: '/front/accounts',
             name: 'front_add_user_account',
             processor: AccountProcessor::class
+        ),
+        new Delete(
+            uriTemplate: '/front/accounts/{id}',
+            name: 'front_remove_user_account',
         ),
     ],
     normalizationContext: [

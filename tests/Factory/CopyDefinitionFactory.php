@@ -46,11 +46,7 @@ final class CopyDefinitionFactory extends ModelFactory
      */
     protected function getDefaults(): array
     {
-        return [
-            'active' => self::faker()->boolean(),
-            'archived' => self::faker()->boolean(),
-            'createdAt' => self::faker()->dateTime(),
-        ];
+        return [];
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Admin\Account\ApiResource;
 use ApiPlatform\Doctrine\Orm\State\Options;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use App\Core\Account\Entity\CopyDefinition;
@@ -21,6 +22,10 @@ use DateTime;
         new GetCollection(
             uriTemplate: '/admin/copy-definitions',
             name: 'admin_get_copy_definition_collection'
+        ),
+        new Delete(
+            uriTemplate: '/admin/copy-definitions/{id}',
+            name: 'admin_delete_copy_definition'
         )
     ],
     provider: CopyDefinitionProvider::class,

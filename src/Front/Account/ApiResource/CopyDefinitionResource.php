@@ -5,6 +5,7 @@ namespace App\Front\Account\ApiResource;
 use ApiPlatform\Doctrine\Orm\State\Options;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
@@ -24,6 +25,10 @@ use DateTime;
         new GetCollection(
             uriTemplate: '/front/copy-definitions',
             name: 'front_get_copy_definition_collection'
+        ),
+        new Delete(
+            uriTemplate: '/front/copy-definitions/{id}',
+            name: 'front_delete_copy_definition'
         )
     ],
     provider: CopyDefinitionProvider::class,

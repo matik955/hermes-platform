@@ -6,6 +6,7 @@ use App\Front\Account\ApiResource\AccountResource;
 use App\Tests\Api\AbstractTest;
 use App\Tests\Factory\AccountFactory;
 use App\Tests\Factory\UserFactory;
+use Symfony\Component\HttpFoundation\Response;
 use Zenstruck\Foundry\Test\Factories;
 use Zenstruck\Foundry\Test\ResetDatabase;
 use function Zenstruck\Foundry\faker;
@@ -51,5 +52,19 @@ class AccountTest extends AbstractTest
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
         $this->assertMatchesRegularExpression('~^/api/front/accounts/\d+$~', $response->toArray()['@id']);
         $this->assertMatchesResourceItemJsonSchema(AccountResource::class);
+    }
+
+    public function testDeleteAccount(): void
+    {
+        $user = UserFactory::createOne(['email' => 'admin@example.com', 'password' => 'admin']);
+        $account = AccountFactory::createOne(['user' => $user]);
+
+        $response = static::createClientWithCredentials()->request('DELETE', '/api/front/accounts/' . $account->getId() , [
+            'headers' => [
+                'content-type' => 'application/ld+json'
+            ],
+        ]);
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
     }
 }
