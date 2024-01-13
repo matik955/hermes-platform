@@ -13,12 +13,11 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 final class CopyDefinitionProcessor implements ProcessorInterface
 {
-    private CopyDefinitionRepository $copyDefinitionRepository;
-
     public function __construct(
         #[Autowire(service: PersistProcessor::class)]
         private readonly ProcessorInterface $persistProcessor,
-        private readonly AccountRepository $accountRepository
+        private readonly AccountRepository $accountRepository,
+        private readonly CopyDefinitionRepository $copyDefinitionRepository
     )
     {
     }

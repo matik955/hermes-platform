@@ -5,6 +5,7 @@ namespace App\Admin\Account\ApiResource;
 use ApiPlatform\Doctrine\Orm\State\Options;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
@@ -27,7 +28,11 @@ use App\Core\Account\Validator as AccountAssert;
         new GetCollection(
             uriTemplate: '/admin/accounts',
             name: 'admin_get_account_collection'
-        )
+        ),
+        new Delete(
+            uriTemplate: '/admin/accounts/{id}',
+            name: 'admin_remove_user_account',
+        ),
     ],
     normalizationContext: [
         AbstractObjectNormalizer::SKIP_NULL_VALUES => true,

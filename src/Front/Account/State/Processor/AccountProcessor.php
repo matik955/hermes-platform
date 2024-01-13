@@ -14,12 +14,11 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 final class AccountProcessor implements ProcessorInterface
 {
-    private AccountRepository $accountRepository;
-
     public function __construct(
         #[Autowire(service: PersistProcessor::class)]
         private readonly ProcessorInterface $persistProcessor,
-        private readonly FrontUserProvider $userProvider
+        private readonly FrontUserProvider $userProvider,
+        private readonly  AccountRepository $accountRepository
     )
     {
     }
