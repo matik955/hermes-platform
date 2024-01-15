@@ -65,8 +65,10 @@ class CopyDefinitionResource
 
     private ?DateTime $archivedAt = null;
 
+    #[ApiProperty(readableLink: true)]
     private ?AccountResource $sourceAccount;
 
+    #[ApiProperty(readableLink: true)]
     private ?AccountResource $targetAccount;
 
     public function __construct(
