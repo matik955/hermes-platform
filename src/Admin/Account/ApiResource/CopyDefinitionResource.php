@@ -28,6 +28,7 @@ use DateTime;
             name: 'admin_delete_copy_definition'
         )
     ],
+    paginationItemsPerPage: 10,
     provider: CopyDefinitionProvider::class,
     stateOptions: new Options(entityClass: CopyDefinition::class)
 )]

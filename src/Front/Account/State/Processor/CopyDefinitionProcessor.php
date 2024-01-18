@@ -3,6 +3,8 @@
 namespace App\Front\Account\State\Processor;
 
 use ApiPlatform\Doctrine\Common\State\PersistProcessor;
+use ApiPlatform\Doctrine\Common\State\RemoveProcessor;
+use ApiPlatform\Metadata\DeleteOperationInterface;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Core\Account\Entity\CopyDefinition;
@@ -16,6 +18,8 @@ final class CopyDefinitionProcessor implements ProcessorInterface
     public function __construct(
         #[Autowire(service: PersistProcessor::class)]
         private readonly ProcessorInterface $persistProcessor,
+        #[Autowire(service: RemoveProcessor::class)]
+        private readonly ProcessorInterface $removeProcessor,
         private readonly AccountRepository $accountRepository,
         private readonly CopyDefinitionRepository $copyDefinitionRepository
     )
@@ -36,6 +40,12 @@ final class CopyDefinitionProcessor implements ProcessorInterface
                 $sourceAccount,
                 $targetAccount,
             );
+        }
+
+        if ($operation instanceof DeleteOperationInterface) {
+            $this->removeProcessor->process($entity, $operation, $uriVariables, $context);
+
+            return null;
         }
 
         $this->persistProcessor->process($entity, $operation, $uriVariables);
