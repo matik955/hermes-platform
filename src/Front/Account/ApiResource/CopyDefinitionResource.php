@@ -2,6 +2,8 @@
 
 namespace App\Front\Account\ApiResource;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Doctrine\Orm\State\Options;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
@@ -31,6 +33,7 @@ use DateTime;
             name: 'front_delete_copy_definition'
         )
     ],
+    paginationItemsPerPage: 10,
     provider: CopyDefinitionProvider::class,
     stateOptions: new Options(entityClass: CopyDefinition::class)
 )]

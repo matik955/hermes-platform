@@ -2,7 +2,9 @@
 
 namespace App\Admin\Account\ApiResource;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Doctrine\Orm\State\Options;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
@@ -62,6 +64,11 @@ use App\Core\Account\Validator as AccountAssert;
     paginationItemsPerPage: 10,
     stateOptions: new Options(entityClass: Account::class)
 )]
+#[ApiFilter(SearchFilter::class, properties: [
+    'login' => 'partial',
+    'tradeServer' => 'partial',
+    'mtVersion' => 'exact'
+])]
 #[AccountAssert\UniqueAccount]
 class AccountResource
 {
