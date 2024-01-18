@@ -64,6 +64,9 @@ class Account implements ResourceInterface
     #[ORM\OneToMany(mappedBy: 'account', targetEntity: Order::class)]
     private Collection $orders;
 
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: AccountLog::class)]
+    private Collection $logs;
+
     public function __construct(
         string      $login,
         string      $password,
@@ -73,7 +76,8 @@ class Account implements ResourceInterface
         ?float      $balance = null,
         ?Collection $sourceDefinitions = null,
         ?Collection $targetDefinitions = null,
-        ?Collection $orders = null
+        ?Collection $orders = null,
+        ?Collection $logs = null
     )
     {
         $this->login = $login;
@@ -86,6 +90,7 @@ class Account implements ResourceInterface
         $this->sourceDefinitions = $sourceDefinitions ?? new ArrayCollection();
         $this->targetDefinitions = $targetDefinitions ?? new ArrayCollection();
         $this->orders = $orders ?? new ArrayCollection();
+        $this->logs = $logs ?? new  ArrayCollection();
         $this->createdAt = new DateTime();
     }
 
@@ -158,5 +163,22 @@ class Account implements ResourceInterface
     public function getOrders(): Collection
     {
         return $this->orders;
+    }
+
+    public function getLogs(): Collection
+    {
+        return $this->logs;
+    }
+
+    public function addLog(AccountLog $log): void
+    {
+        if (!$this->logs->contains($log)) {
+            $this->logs->add($log);
+        }
+    }
+
+    public function removeLog(AccountLog $log): void
+    {
+        $this->logs->removeElement($log);
     }
 }
