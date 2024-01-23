@@ -32,15 +32,21 @@ class AccountLog implements ResourceInterface
     #[ORM\JoinColumn(name: 'account_id', referencedColumnName: 'id')]
     private Account $owner;
 
+    #[ORM\OneToOne(targetEntity: CopyDefinition::class)]
+    #[ORM\JoinColumn(name: 'copy_definition_id', referencedColumnName: 'id')]
+    private ?CopyDefinition $copyDefinition;
+
     public function __construct(
         string  $type,
         array   $data,
-        Account $owner
+        Account $owner,
+        ?CopyDefinition $copyDefinition = null
     )
     {
         $this->type = $type;
         $this->data = $data;
         $this->owner = $owner;
+        $this->copyDefinition = $copyDefinition;
         $this->createdAt = new DateTime();
     }
 
@@ -62,6 +68,11 @@ class AccountLog implements ResourceInterface
     public function getOwner(): Account
     {
         return $this->owner;
+    }
+
+    public function getCopyDefinition(): ?CopyDefinition
+    {
+        return $this->copyDefinition;
     }
 
     public function getCreatedAt(): DateTime
