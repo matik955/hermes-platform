@@ -15,6 +15,7 @@ api_platform:
             - '%kernel.project_dir%/src/Admin/Account/ApiResource'
     defaults:
         stateless: true
+        pagination_client_items_per_page: true
         cache_headers:
             vary: ['Content-Type', 'Authorization', 'Origin']
         extra_properties:
