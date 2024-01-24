@@ -22,7 +22,7 @@ class AccountLogTest extends AbstractTest
         $account = AccountFactory::createOne();
         AccountLogFactory::createMany(50, ['owner' => $account]);
 
-        static::createClientWithCredentials()->request('GET', '/api/admin/accounts/' . $account->getId() . '/logs');
+        static::createClientWithCredentials()->request('GET', '/api/admin/accounts/' . $account->getId() . '/account-logs');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');

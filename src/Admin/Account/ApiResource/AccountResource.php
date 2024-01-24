@@ -54,6 +54,7 @@ use App\Core\Account\Validator as AccountAssert;
             provider: AccountProvider::class
         ),
         new Post(
+            read: false,
             name: 'admin_add_user_account',
             processor: AccountProcessor::class
         ),

@@ -36,6 +36,7 @@ use App\Core\Api\State\EntityToDtoStateProvider;
             name: 'admin_get_account_log_collection'
         ),
         new Post(
+            read: false,
             name: 'admin_add_account_log',
             processor: AccountLogProcessor::class,
         ),

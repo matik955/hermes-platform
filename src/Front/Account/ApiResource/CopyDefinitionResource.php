@@ -46,6 +46,7 @@ use DateTime;
             provider: CopyDefinitionProvider::class
         ),
         new Post(
+            read: false,
             name: 'front_add_account_copy_definition',
             processor: CopyDefinitionProcessor::class
         ),
