@@ -33,7 +33,7 @@ final class AccountProvider implements ProviderInterface
             $itemsPerPage = $this->pagination->getLimit($operation, $context);
 
             /** @var Account[] $entities */
-            $entities = $this->accountRepository->getAccountsForUser($currentUser->getId(), $currentPage, $itemsPerPage);
+            $entities = $this->accountRepository->getAccountsForUser($currentUser->getId(), $currentPage, $itemsPerPage, $context['filters']);
 
             assert($entities instanceof Paginator);
 
