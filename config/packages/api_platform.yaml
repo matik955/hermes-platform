@@ -13,6 +13,7 @@ api_platform:
             - '%kernel.project_dir%/src/Front/Account/ApiResource'
             - '%kernel.project_dir%/src/Admin/User/ApiResource'
             - '%kernel.project_dir%/src/Admin/Account/ApiResource'
+            - '%kernel.project_dir%/src/Admin/System/ApiResource'
     defaults:
         stateless: true
         pagination_client_items_per_page: true
