@@ -34,7 +34,8 @@
         "symfony/twig-bundle": "6.3.*",
         "symfony/validator": "6.3.*",
         "symfony/yaml": "6.3.*",
-        "symfonycasts/micro-mapper": "^0.1.4"
+        "symfonycasts/micro-mapper": "^0.1.4",
+        "tilleuls/forgot-password-bundle": "^1.5"
     },
     "config": {
         "allow-plugins": {
