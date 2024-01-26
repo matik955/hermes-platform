@@ -34,7 +34,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Core/Order/Entity'
                 prefix: 'App\Core\Order\Entity'
                 alias: Order
-
+            System:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Core/System/Entity'
+                prefix: 'App\Core\System\Entity'
+                alias: System
 when@test:
     doctrine:
         dbal:

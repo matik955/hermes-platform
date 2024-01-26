@@ -38,8 +38,8 @@ class AccountTest extends AbstractTest
         $response = static::createClientWithCredentials()->request('POST', '/api/front/accounts', [
             'json' => [
                 "login" => faker()->unique()->text(16),
-                "password" => faker()->password,
-                "tradeServer" => faker()->text,
+                "password" => faker()->password(),
+                "tradeServer" => faker()->text(),
                 "mtVersion" => 3,
                 "balance" => 0
             ],

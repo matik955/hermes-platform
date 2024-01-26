@@ -24,10 +24,6 @@ use DateTime;
             uriTemplate: '/front/copy-definitions/{id}',
             name: 'front_get_single_copy_definition',
         ),
-        new GetCollection(
-            uriTemplate: '/front/copy-definitions',
-            name: 'front_get_copy_definition_collection'
-        ),
         new Delete(
             uriTemplate: '/front/copy-definitions/{id}',
             name: 'front_delete_copy_definition'

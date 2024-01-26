@@ -12,8 +12,6 @@ use ApiPlatform\Metadata\Post;
 use App\Admin\Account\State\Processor\AccountLogProcessor;
 use App\Admin\Account\State\Provider\AccountLogProvider;
 use App\Core\Account\Entity\AccountLog;
-use App\Core\Api\State\EntityClassDtoStateProcessor;
-use App\Core\Api\State\EntityToDtoStateProvider;
 
 #[ApiResource(
     shortName: 'AccountLog',
@@ -59,14 +57,14 @@ class AccountLogResource
 
     private \DateTime $createdAt;
 
-    private AccountResource $owner;
+    private ?AccountResource $owner;
 
     public ?CopyDefinitionResource $copyDefinition;
 
     public function __construct(
         string  $type,
         array   $data,
-        AccountResource $owner,
+        ?AccountResource $owner = null,
         ?CopyDefinitionResource $copyDefinition = null
     )
     {
@@ -96,7 +94,7 @@ class AccountLogResource
         return $this->data;
     }
 
-    public function getOwner(): AccountResource
+    public function getOwner(): ?AccountResource
     {
         return $this->owner;
     }
