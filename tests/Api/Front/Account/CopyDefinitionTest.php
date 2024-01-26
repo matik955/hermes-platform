@@ -23,7 +23,7 @@ class CopyDefinitionTest extends AbstractTest
         $targetAccount = AccountFactory::createOne(['user' => $user]);
         CopyDefinitionFactory::createOne(['sourceAccount' => $sourceAccount, 'targetAccount' => $targetAccount]);
 
-        $response = static::createClientWithCredentials()->request('GET', '/api/front/copy-definitions');
+        $response = static::createClientWithCredentials()->request('GET', '/api/front/accounts/' . $sourceAccount->getId() . '/copy-definitions');
 
         $this->assertResponseIsSuccessful();
         $this->assertCount(1, $response->toArray()['hydra:member']);
@@ -59,7 +59,7 @@ class CopyDefinitionTest extends AbstractTest
         $targetAccount = AccountFactory::createOne(['user' => $user]);
         $copyDefinition = CopyDefinitionFactory::createOne(['sourceAccount' => $sourceAccount, 'targetAccount' => $targetAccount]);
 
-        $response = static::createClientWithCredentials()->request('DELETE', '/api/front/copy-definitions/' . $copyDefinition->getId() , [
+        $response = static::createClientWithCredentials()->request('DELETE', '/api/front/copy-definitions/' . $copyDefinition->getId(), [
             'headers' => [
                 'content-type' => 'application/ld+json'
             ],

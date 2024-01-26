@@ -46,4 +46,51 @@ class AccountLogTest extends AbstractTest
         $this->assertCount(10, $response->toArray()['hydra:member']);
         $this->assertMatchesResourceCollectionJsonSchema(AccountLogResource::class);
     }
+
+    public function testGetSingleItem(): void
+    {
+        UserFactory::createOne(['email' => 'admin@example.com', 'password' => 'admin']);
+
+        $account = AccountFactory::createOne();
+        $accountLog = AccountLogFactory::createOne(['owner' => $account, 'type' => 'unknown_error']);
+
+        $accountLogId = $accountLog->getId();
+        static::createClientWithCredentials()->request('GET', '/api/admin/account-logs/' . $accountLogId);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
+
+        $this->assertJsonContains([
+            "@context" => "/api/contexts/AccountLog",
+            "@id" => "/api/admin/account-logs/" . $accountLogId,
+            "@type" => "AccountLog",
+            "id" => $accountLogId,
+            "type" => "unknown_error",
+            "data" => [],
+            'owner' => '/api/admin/accounts/' . $account->getId(),
+        ]);
+
+        $this->assertMatchesResourceItemJsonSchema(AccountLogResource::class);
+    }
+
+    public function testCreateSystemLog(): void
+    {
+        UserFactory::createOne(['email' => 'admin@example.com', 'password' => 'admin']);
+
+        $account = AccountFactory::createOne();
+
+        $response = static::createClientWithCredentials()->request('POST', '/api/admin/accounts/' . $account->getId() . '/account-logs', [
+            'json' => [
+                'type' => 'unknown_error',
+                'data' => [],
+            ],
+            'headers' => [
+                'content-type' => 'application/ld+json'
+            ],
+        ]);
+
+        $this->assertResponseStatusCodeSame(201);
+        $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
+        $this->assertMatchesResourceItemJsonSchema(AccountLogResource::class);
+    }
 }

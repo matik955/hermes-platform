@@ -29,7 +29,7 @@ final readonly class AccountLogProcessor implements ProcessorInterface
         if ($data->getId()) {
             $entity = $this->accountLogRepository->find($data->getId());
         } else {
-            $owner = $this->accountRepository->findOneBy(['id' => $data->getOwner()->getId()]);
+            $owner = $this->accountRepository->findOneBy(['id' => $uriVariables['accountId']]);
 
             $entity = new AccountLog(
                 $data->getType(),

@@ -43,4 +43,47 @@ class SystemLogTest extends AbstractTest
         $this->assertCount(10, $response->toArray()['hydra:member']);
         $this->assertMatchesResourceCollectionJsonSchema(SystemLogResource::class);
     }
+
+    public function testGetSingleItem(): void
+    {
+        UserFactory::createOne(['email' => 'admin@example.com', 'password' => 'admin']);
+
+        $systemLog = SystemLogFactory::createOne(['type' => 'unknown_error']);
+
+        $systemLogId = $systemLog->getId();
+        static::createClientWithCredentials()->request('GET', '/api/admin/system-logs/' . $systemLogId);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
+
+        // Asserts that the returned JSON is a superset of this one
+        $this->assertJsonContains([
+            "@context" => "/api/contexts/SystemLog",
+            "@id" => "/api/admin/system-logs/" . $systemLogId,
+            "@type" => "SystemLog",
+            "id" => $systemLogId,
+            "type" => "unknown_error",
+            "data" => []
+        ]);
+
+        $this->assertMatchesResourceItemJsonSchema(SystemLogResource::class);
+    }
+
+    public function testCreateSystemLog(): void
+    {
+        $response = static::createClient()->request('POST', '/api/admin/system-logs', [
+            'json' => [
+                'type' => 'unknown_error',
+                'data' => [],
+            ],
+            'headers' => [
+                'content-type' => 'application/ld+json'
+            ],
+        ]);
+
+        $this->assertResponseStatusCodeSame(201);
+        $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
+        $this->assertMatchesRegularExpression('~^/api/admin/system-logs/\d+$~', $response->toArray()['@id']);
+        $this->assertMatchesResourceItemJsonSchema(SystemLogResource::class);
+    }
 }

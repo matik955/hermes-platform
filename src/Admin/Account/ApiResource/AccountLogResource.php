@@ -57,14 +57,14 @@ class AccountLogResource
 
     private \DateTime $createdAt;
 
-    private AccountResource $owner;
+    private ?AccountResource $owner;
 
     public ?CopyDefinitionResource $copyDefinition;
 
     public function __construct(
         string  $type,
         array   $data,
-        AccountResource $owner,
+        ?AccountResource $owner = null,
         ?CopyDefinitionResource $copyDefinition = null
     )
     {
@@ -94,7 +94,7 @@ class AccountLogResource
         return $this->data;
     }
 
-    public function getOwner(): AccountResource
+    public function getOwner(): ?AccountResource
     {
         return $this->owner;
     }
