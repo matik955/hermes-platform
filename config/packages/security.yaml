@@ -38,6 +38,7 @@ security:
         - { path: ^/api$, roles: PUBLIC_ACCESS } 
         - { path: ^/api/docs, roles: PUBLIC_ACCESS }
         - { path: ^/api/front/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api/front/reset-password, roles: PUBLIC_ACCESS }
         - { path: ^/api/front/users, methods: POST, roles: PUBLIC_ACCESS }
         - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
 
