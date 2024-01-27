@@ -39,7 +39,6 @@ final class AccountProvider implements ProviderInterface
                 $itemsPerPage,
                 $context['filters'] ??= []
             );
-
             assert($entities instanceof Paginator);
 
             $dtos = [];
