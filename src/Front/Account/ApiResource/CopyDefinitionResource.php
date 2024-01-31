@@ -2,6 +2,7 @@
 
 namespace App\Front\Account\ApiResource;
 
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Doctrine\Orm\State\Options;
@@ -56,6 +57,11 @@ use DateTime;
     ],
     stateOptions: new Options(entityClass: CopyDefinition::class)
 )]
+#[ApiFilter(BooleanFilter::class, properties: ['active'])]
+#[ApiFilter(SearchFilter::class, properties: [
+    'sourceAccount' => 'exact',
+    'targetAccount' => 'exact'
+])]
 class CopyDefinitionResource
 {
     #[ApiProperty(writable: false, identifier: true)]

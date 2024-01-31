@@ -18,9 +18,9 @@ class CopyDefinitionRepository extends EntityRepository
     }
 
     public function getPaginatorForUser(
-        int $userId,
-        int $page,
-        int $itemsPerPage = 10,
+        int   $userId,
+        int   $page,
+        int   $itemsPerPage = 10,
         array $filters = []
     ): Paginator
     {
@@ -36,7 +36,25 @@ class CopyDefinitionRepository extends EntityRepository
                 continue;
             }
 
-            $queryBuilder->andWhere($queryBuilder->expr()->like('a.' . $filter, $queryBuilder->expr()->literal('%' . $value . '%')));
+            if ($filter === 'targetAccount' || $filter === 'sourceAccount') {
+                $queryBuilder
+                    ->andWhere('c.' . $filter . ' = :' . $filter)
+                    ->setParameter($filter, $value)
+                ;
+
+                continue;
+            }
+
+            if ($filter === 'active') {
+                $queryBuilder
+                    ->andWhere('c.' . $filter . ' = :' . $filter)
+                    ->setParameter($filter, 'true' === $value ? 1 : 0)
+                ;
+
+                continue;
+            }
+
+            $queryBuilder->andWhere($queryBuilder->expr()->like('c.' . $filter, $queryBuilder->expr()->literal('%' . $value . '%')));
         }
 
         $criteria = Criteria::create()
