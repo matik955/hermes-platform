@@ -19,4 +19,9 @@ trait ResourceRepositoryTrait
             $this->_em->flush();
         }
     }
+
+    public function flush(): void
+    {
+        $this->_em->flush();
+    }
 }

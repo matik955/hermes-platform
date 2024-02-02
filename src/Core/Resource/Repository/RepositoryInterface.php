@@ -10,4 +10,6 @@ interface RepositoryInterface extends ObjectRepository
     public function add(ResourceInterface $resource): void;
 
     public function remove(ResourceInterface $resource): void;
+
+    public function flush(): void;
 }
