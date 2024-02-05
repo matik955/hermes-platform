@@ -15,13 +15,13 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Admin\Account\Payload\AccountBalanceUpdatePayload;
 use App\Admin\Account\State\Processor\AccountBalanceUpdateProcessor;
-use App\Core\Account\Entity\Account;
 use App\Admin\Account\State\Processor\AccountProcessor;
 use App\Admin\Account\State\Provider\AccountProvider;
 use App\Admin\User\ApiResource\UserResource;
+use App\Core\Account\Entity\Account;
+use App\Core\Account\Validator as AccountAssert;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
-use App\Core\Account\Validator as AccountAssert;
 
 #[ApiResource(
     shortName: 'Account',
@@ -41,7 +41,6 @@ use App\Core\Account\Validator as AccountAssert;
         new Patch(
             '/admin/accounts/{id}/balance',
             input: AccountBalanceUpdatePayload::class,
-            output: AccountBalanceUpdatePayload::class,
             name: 'admin_update_account_balance',
             processor: AccountBalanceUpdateProcessor::class
         ),
