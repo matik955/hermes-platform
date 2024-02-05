@@ -11,14 +11,17 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use App\Core\Account\Entity\Account;
+use App\Admin\Account\Payload\AccountBalanceUpdatePayload;
+use App\Admin\Account\State\Processor\AccountBalanceUpdateProcessor;
 use App\Admin\Account\State\Processor\AccountProcessor;
 use App\Admin\Account\State\Provider\AccountProvider;
 use App\Admin\User\ApiResource\UserResource;
+use App\Core\Account\Entity\Account;
+use App\Core\Account\Validator as AccountAssert;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
-use App\Core\Account\Validator as AccountAssert;
 
 #[ApiResource(
     shortName: 'Account',
@@ -34,6 +37,12 @@ use App\Core\Account\Validator as AccountAssert;
         new Delete(
             uriTemplate: '/admin/accounts/{id}',
             name: 'admin_remove_user_account',
+        ),
+        new Patch(
+            '/admin/accounts/{id}/balance',
+            input: AccountBalanceUpdatePayload::class,
+            name: 'admin_update_account_balance',
+            processor: AccountBalanceUpdateProcessor::class
         ),
     ],
     normalizationContext: [

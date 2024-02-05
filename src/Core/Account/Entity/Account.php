@@ -124,6 +124,11 @@ class Account implements ResourceInterface
         return $this->balance;
     }
 
+    public function updateBalance(float $balance): void
+    {
+        $this->balance = $balance;
+    }
+
     public function isArchived(): bool
     {
         return $this->archived;
