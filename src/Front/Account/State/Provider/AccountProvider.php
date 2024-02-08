@@ -37,7 +37,7 @@ final class AccountProvider implements ProviderInterface
                 $currentUser->getId(),
                 $currentPage,
                 $itemsPerPage,
-                $context['filters'] ??= []
+                $context['filters'] ??= [],
             );
             assert($entities instanceof Paginator);
 

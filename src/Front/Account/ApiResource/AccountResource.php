@@ -2,6 +2,7 @@
 
 namespace App\Front\Account\ApiResource;
 
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Doctrine\Orm\State\Options;
 use ApiPlatform\Metadata\ApiFilter;
@@ -51,10 +52,12 @@ use App\Core\Account\Validator as AccountAssert;
     stateOptions: new Options(entityClass: Account::class),
 )]
 #[ApiFilter(SearchFilter::class, properties: [
+    'phrase' => 'partial',
     'login' => 'partial',
     'tradeServer' => 'partial',
     'mtVersion' => 'exact'
 ])]
+#[ApiFilter(OrderFilter::class, properties: ['id', 'login', 'balance'])]
 #[AccountAssert\UniqueAccount]
 class AccountResource
 {
