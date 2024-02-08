@@ -27,11 +27,23 @@ class CopyDefinitionRepository extends EntityRepository
         $firstResult = ($page - 1) * $itemsPerPage;
 
         $queryBuilder = $this->createQueryBuilder('c')
-            ->innerJoin('c.sourceAccount', 'a')
-            ->andWhere('a.user = :user')
+            ->innerJoin('c.sourceAccount', 'sa')
+            ->innerJoin('c.targetAccount', 'ta')
+            ->andWhere('sa.user = :user')
             ->setParameter('user', $userId);
 
         foreach ($filters as $filter => $value) {
+            if ('phrase' === $filter) {
+                $queryBuilder->andWhere(
+                    $queryBuilder->expr()->orX(
+                        $queryBuilder->expr()->like('sa.login', $queryBuilder->expr()->literal('%' . $value . '%')),
+                        $queryBuilder->expr()->like('ta.login', $queryBuilder->expr()->literal('%' . $value . '%')),
+                    )
+                );
+
+                continue;
+            }
+
             if (!property_exists(CopyDefinitionResource::class, $filter)) {
                 continue;
             }

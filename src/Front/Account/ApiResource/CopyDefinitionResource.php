@@ -59,6 +59,7 @@ use DateTime;
 )]
 #[ApiFilter(BooleanFilter::class, properties: ['active'])]
 #[ApiFilter(SearchFilter::class, properties: [
+    'phrase' => 'partial',
     'sourceAccount' => 'exact',
     'targetAccount' => 'exact'
 ])]
