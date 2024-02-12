@@ -17,6 +17,7 @@ use App\Core\Account\Entity\CopyDefinition;
 use App\Front\Account\State\Processor\CopyDefinitionProcessor;
 use App\Front\Account\State\Provider\CopyDefinitionProvider;
 use DateTime;
+use App\Core\Account\Validator as AccountAssert;
 
 #[ApiResource(
     shortName: 'CopyDefinition',
@@ -62,6 +63,7 @@ use DateTime;
     'sourceAccount' => 'exact',
     'targetAccount' => 'exact'
 ])]
+#[AccountAssert\UniqueCopyDefinitionAccount]
 class CopyDefinitionResource
 {
     #[ApiProperty(writable: false, identifier: true)]
