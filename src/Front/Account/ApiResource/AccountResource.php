@@ -11,9 +11,9 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use App\Core\Account\Entity\Account;
+use App\Core\Account\Interface\AccountInterface;
 use App\Front\Account\State\Processor\AccountProcessor;
 use App\Front\Account\State\Provider\AccountProvider;
 use App\Front\User\ApiResource\UserResource;
@@ -59,7 +59,7 @@ use App\Core\Account\Validator as AccountAssert;
 ])]
 #[ApiFilter(OrderFilter::class, properties: ['id', 'login', 'balance'])]
 #[AccountAssert\UniqueAccount]
-class AccountResource
+class AccountResource implements AccountInterface
 {
     #[ApiProperty(writable: false, identifier: true)]
     private ?int $id = null;

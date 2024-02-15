@@ -31,13 +31,13 @@ class CopyDefinitionTest extends AbstractTest
         $this->assertMatchesResourceCollectionJsonSchema(CopyDefinitionResource::class);
     }
 
-    public function testCreateAccount(): void
+    public function testCreateCopyDefinition(): void
     {
         $user = UserFactory::createOne(['email' => 'admin@example.com', 'password' => 'admin']);
         $sourceAccount = AccountFactory::createOne(['user' => $user]);
         $targetAccount = AccountFactory::createOne(['user' => $user]);
 
-        $response = static::createClientWithCredentials()->request('POST', '/api/front/accounts/' . $sourceAccount->getId() . '/copy-definitions', [
+        static::createClientWithCredentials()->request('POST', '/api/front/accounts/' . $sourceAccount->getId() . '/copy-definitions', [
             'json' => [
                 "sourceAccount" => "/api/front/accounts/" . $sourceAccount->getId(),
                 "targetAccount" => "/api/front/accounts/" . $targetAccount->getId()
@@ -50,6 +50,57 @@ class CopyDefinitionTest extends AbstractTest
         $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
         $this->assertMatchesResourceItemJsonSchema(CopyDefinitionResource::class);
+    }
+
+    public function testCopyDefinitionNotCreatedWithSameSourceAndTarget(): void
+    {
+        $user = UserFactory::createOne(['email' => 'admin@example.com', 'password' => 'admin']);
+        $sourceAccount = AccountFactory::createOne(['user' => $user]);
+
+        $response = static::createClientWithCredentials()->request('POST', '/api/front/accounts/' . $sourceAccount->getId() . '/copy-definitions', [
+            'json' => [
+                "sourceAccount" => "/api/front/accounts/" . $sourceAccount->getId(),
+                "targetAccount" => "/api/front/accounts/" . $sourceAccount->getId()
+            ],
+            'headers' => [
+                'content-type' => 'application/ld+json'
+            ],
+        ]);
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function testCopyDefinitionNotCreatedWithSameSourceAccountUsedAsTarget(): void
+    {
+        $user = UserFactory::createOne(['email' => 'admin@example.com', 'password' => 'admin']);
+        $sourceAccount = AccountFactory::createOne(['user' => $user]);
+        $targetAccount = AccountFactory::createOne(['user' => $user]);
+
+        static::createClientWithCredentials()->request('POST', '/api/front/accounts/' . $sourceAccount->getId() . '/copy-definitions', [
+            'json' => [
+                "sourceAccount" => "/api/front/accounts/" . $sourceAccount->getId(),
+                "targetAccount" => "/api/front/accounts/" . $targetAccount->getId()
+            ],
+            'headers' => [
+                'content-type' => 'application/ld+json'
+            ],
+        ]);
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
+        $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
+        $this->assertMatchesResourceItemJsonSchema(CopyDefinitionResource::class);
+
+        static::createClientWithCredentials()->request('POST', '/api/front/accounts/' . $sourceAccount->getId() . '/copy-definitions', [
+            'json' => [
+                "sourceAccount" => "/api/front/accounts/" . $targetAccount->getId(),
+                "targetAccount" => "/api/front/accounts/" . $sourceAccount->getId()
+            ],
+            'headers' => [
+                'content-type' => 'application/ld+json'
+            ],
+        ]);
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testDeleteCopyDefinition(): void

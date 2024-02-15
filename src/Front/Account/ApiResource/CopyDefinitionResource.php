@@ -14,9 +14,11 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use App\Core\Account\Entity\CopyDefinition;
+use App\Core\Account\Interface\CopyDefinitionInterface;
 use App\Front\Account\State\Processor\CopyDefinitionProcessor;
 use App\Front\Account\State\Provider\CopyDefinitionProvider;
 use DateTime;
+use App\Core\Account\Validator as AccountAssert;
 
 #[ApiResource(
     shortName: 'CopyDefinition',
@@ -63,7 +65,8 @@ use DateTime;
     'sourceAccount' => 'exact',
     'targetAccount' => 'exact'
 ])]
-class CopyDefinitionResource
+#[AccountAssert\UniqueCopyDefinitionAccount]
+class CopyDefinitionResource implements CopyDefinitionInterface
 {
     #[ApiProperty(writable: false, identifier: true)]
     private ?int $id = null;

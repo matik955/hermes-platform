@@ -8,9 +8,13 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use App\Core\Account\Entity\Account;
 use App\Core\Account\Entity\CopyDefinition;
 use App\Admin\Account\State\Provider\CopyDefinitionProvider;
+use App\Core\Account\Interface\AccountInterface;
+use App\Core\Account\Interface\CopyDefinitionInterface;
 use DateTime;
+use App\Core\Account\Validator as AccountAssert;
 
 #[ApiResource(
     shortName: 'CopyDefinition',
@@ -32,7 +36,8 @@ use DateTime;
     provider: CopyDefinitionProvider::class,
     stateOptions: new Options(entityClass: CopyDefinition::class)
 )]
-class CopyDefinitionResource
+#[AccountAssert\UniqueCopyDefinitionAccount]
+class CopyDefinitionResource implements CopyDefinitionInterface
 {
     #[ApiProperty(writable: false, identifier: true)]
     private ?int $id = null;
