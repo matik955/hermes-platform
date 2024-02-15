@@ -19,6 +19,7 @@ use App\Admin\Account\State\Processor\AccountProcessor;
 use App\Admin\Account\State\Provider\AccountProvider;
 use App\Admin\User\ApiResource\UserResource;
 use App\Core\Account\Entity\Account;
+use App\Core\Account\Interface\AccountInterface;
 use App\Core\Account\Validator as AccountAssert;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
@@ -80,7 +81,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
     'mtVersion' => 'exact'
 ])]
 #[AccountAssert\UniqueAccount]
-class AccountResource
+class AccountResource implements AccountInterface
 {
     #[ApiProperty(writable: false, identifier: true)]
     private ?int $id = null;

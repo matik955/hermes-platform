@@ -14,6 +14,8 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use App\Core\Account\Entity\CopyDefinition;
+use App\Core\Account\Interface\AccountInterface;
+use App\Core\Account\Interface\CopyDefinitionInterface;
 use App\Front\Account\State\Processor\CopyDefinitionProcessor;
 use App\Front\Account\State\Provider\CopyDefinitionProvider;
 use DateTime;
@@ -64,7 +66,7 @@ use App\Core\Account\Validator as AccountAssert;
     'targetAccount' => 'exact'
 ])]
 #[AccountAssert\UniqueCopyDefinitionAccount]
-class CopyDefinitionResource
+class CopyDefinitionResource implements CopyDefinitionInterface
 {
     #[ApiProperty(writable: false, identifier: true)]
     private ?int $id = null;
@@ -78,14 +80,14 @@ class CopyDefinitionResource
     private ?DateTime $archivedAt = null;
 
     #[ApiProperty(readableLink: true)]
-    private ?AccountResource $sourceAccount;
+    private ?AccountInterface $sourceAccount;
 
     #[ApiProperty(readableLink: true)]
-    private ?AccountResource $targetAccount;
+    private ?AccountInterface $targetAccount;
 
     public function __construct(
-        ?AccountResource $sourceAccount = null,
-        ?AccountResource $targetAccount = null,
+        ?AccountInterface $sourceAccount = null,
+        ?AccountInterface $targetAccount = null,
     )
     {
         $this->sourceAccount = $sourceAccount;
@@ -123,12 +125,12 @@ class CopyDefinitionResource
         return $this->archivedAt;
     }
 
-    public function getSourceAccount(): ?AccountResource
+    public function getSourceAccount(): ?AccountInterface
     {
         return $this->sourceAccount;
     }
 
-    public function getTargetAccount(): ?AccountResource
+    public function getTargetAccount(): ?AccountInterface
     {
         return $this->targetAccount;
     }

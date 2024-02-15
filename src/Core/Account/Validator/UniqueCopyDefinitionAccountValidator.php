@@ -2,8 +2,8 @@
 
 namespace App\Core\Account\Validator;
 
+use App\Core\Account\Interface\CopyDefinitionInterface;
 use App\Core\Account\Repository\CopyDefinitionRepository;
-use App\Front\Account\ApiResource\CopyDefinitionResource;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
@@ -17,12 +17,12 @@ class UniqueCopyDefinitionAccountValidator extends ConstraintValidator
     }
 
     /**
-     * @param CopyDefinitionResource $receipt
+     * @param CopyDefinitionInterface $receipt
      */
     public function validate($receipt, Constraint $constraint): void
     {
-        if (!$receipt instanceof CopyDefinitionResource) {
-            throw new UnexpectedValueException($receipt, CopyDefinitionResource::class);
+        if (!$receipt instanceof CopyDefinitionInterface) {
+            throw new UnexpectedValueException($receipt, CopyDefinitionInterface::class);
         }
 
         if (!$constraint instanceof UniqueCopyDefinitionAccount) {
