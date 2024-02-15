@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use App\Core\Account\Entity\Account;
 use App\Core\Account\Entity\CopyDefinition;
 use App\Admin\Account\State\Provider\CopyDefinitionProvider;
 use App\Core\Account\Interface\AccountInterface;
@@ -49,13 +50,13 @@ class CopyDefinitionResource implements CopyDefinitionInterface
 
     private ?DateTime $archivedAt = null;
 
-    private ?AccountInterface $sourceAccount;
+    private ?AccountResource $sourceAccount;
 
-    private ?AccountInterface $targetAccount;
+    private ?AccountResource $targetAccount;
 
     public function __construct(
-        ?AccountInterface $sourceAccount = null,
-        ?AccountInterface $targetAccount = null,
+        ?AccountResource $sourceAccount = null,
+        ?AccountResource $targetAccount = null,
     )
     {
         $this->sourceAccount = $sourceAccount;
@@ -93,12 +94,12 @@ class CopyDefinitionResource implements CopyDefinitionInterface
         return $this->archivedAt;
     }
 
-    public function getSourceAccount(): ?AccountInterface
+    public function getSourceAccount(): ?AccountResource
     {
         return $this->sourceAccount;
     }
 
-    public function getTargetAccount(): ?AccountInterface
+    public function getTargetAccount(): ?AccountResource
     {
         return $this->targetAccount;
     }

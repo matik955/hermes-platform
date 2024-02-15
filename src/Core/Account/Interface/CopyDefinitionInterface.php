@@ -2,7 +2,6 @@
 
 namespace App\Core\Account\Interface;
 
-
 interface CopyDefinitionInterface
 {
     public function getId(): ?int;
