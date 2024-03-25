@@ -54,12 +54,39 @@ class AccountTest extends AbstractTest
         $this->assertMatchesResourceItemJsonSchema(AccountResource::class);
     }
 
+    public function testUpdateAccount(): void
+    {
+        $user = UserFactory::createOne(['email' => 'admin@example.com', 'password' => 'admin']);
+        $account = AccountFactory::createOne(['user' => $user]);
+
+        $response = static::createClientWithCredentials()->request('PUT', '/api/front/accounts/' . $account->getId(), [
+            'json' => [
+                "login" => faker()->unique()->text(16),
+                "password" => faker()->password(),
+                "tradeServer" => faker()->text(),
+                "mtVersion" => 3,
+                "balance" => 0
+            ],
+            'headers' => [
+                'content-type' => 'application/ld+json'
+            ],
+        ]);
+
+        dump(json_decode($response->getContent(false), true));
+        exit();
+
+        $this->assertResponseStatusCodeSame(201);
+        $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
+        $this->assertMatchesRegularExpression('~^/api/front/accounts/\d+$~', $response->toArray()['@id']);
+        $this->assertMatchesResourceItemJsonSchema(AccountResource::class);
+    }
+
     public function testDeleteAccount(): void
     {
         $user = UserFactory::createOne(['email' => 'admin@example.com', 'password' => 'admin']);
         $account = AccountFactory::createOne(['user' => $user]);
 
-        $response = static::createClientWithCredentials()->request('DELETE', '/api/front/accounts/' . $account->getId() , [
+        $response = static::createClientWithCredentials()->request('DELETE', '/api/front/accounts/' . $account->getId(), [
             'headers' => [
                 'content-type' => 'application/ld+json'
             ],

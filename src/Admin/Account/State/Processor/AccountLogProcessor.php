@@ -39,7 +39,7 @@ final readonly class AccountLogProcessor implements ProcessorInterface
             );
         }
 
-        $this->persistProcessor->process($entity, $operation, $uriVariables);
+        $this->persistProcessor->process($entity, $operation, $uriVariables, $context);
         $data->setId($entity->getId());
 
         return $data;

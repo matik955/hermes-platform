@@ -12,6 +12,7 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Core\Account\Entity\Account;
 use App\Core\Account\Interface\AccountInterface;
 use App\Front\Account\State\Processor\AccountProcessor;
@@ -36,6 +37,10 @@ use App\Core\Account\Validator as AccountAssert;
             uriTemplate: '/front/accounts',
             name: 'front_add_user_account',
             processor: AccountProcessor::class
+        ),
+        new Put(
+            uriTemplate: '/front/accounts/{id}',
+            name: 'front_update_account'
         ),
         new Delete(
             uriTemplate: '/front/accounts/{id}',
